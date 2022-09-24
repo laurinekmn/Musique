@@ -13,21 +13,51 @@ library(shiny)
 shinyUI(fluidPage(
 
     # Application title
-    titlePanel("Musique"),
+    #titlePanel("Musique"),
+  navbarPage("Musique maestro !",
 
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 30,
-                        value = 30)
+        # Premier onglet : visualisation graphique des données
+        tabPanel("Visualisation", 
+                 
+                 fluidRow(
+                   # premier colonne
+                   column(width = 3, 
+                          # wellPanel pour griser
+                          wellPanel(
+                            sliderInput("bins",
+                                        "Number of bins:",
+                                        min = 1,
+                                        max = 50,
+                                        value = 30),
+                            
+                            # input pour la couleur
+                            colourInput(inputId = "color", label = "Couleur :", value = "purple"),
+                            
+                            # titre du graphique
+                            textInput(inputId = "titre", label = "Titre :", value = "Histogramme"),
+                            
+                            # selection de la colonne
+                            radioButtons(inputId = "var", label = "Variable : ", choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)])
+                          )
+                   ), 
+                   # deuxieme colonne
+                   column(width = 9, 
+                          #tabsetPanel(
+                            tabPanel("Histogramme", 
+                                     # plotOutput -> amChartsOutput
+                                     amChartsOutput("distPlot"),
+                                     # classes (div centrée)
+                                     div(textOutput("n_bins"), align = "center")
+                            )#,
+                          #   tabPanel("Boxplot", amChartsOutput("boxplot"))
+                          # )
+                   )
+                 )
         ),
 
         # Show a plot of the generated distribution
-        mainPanel(
-            plotOutput("distPlot")
-        )
+        # mainPanel(
+        #     plotOutput("distPlot")
+        # )
     )
 ))

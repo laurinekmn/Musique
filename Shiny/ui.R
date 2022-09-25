@@ -8,6 +8,8 @@
 #
 
 library(shiny)
+library(colourpicker)
+library(rAmCharts)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -24,14 +26,15 @@ shinyUI(fluidPage(
                    column(width = 3, 
                           # wellPanel pour griser
                           wellPanel(
+                            titlePanel("Paramètres de l'histogramme"),
                             sliderInput("bins",
-                                        "Number of bins:",
+                                        "Nombre de barres :",
                                         min = 1,
                                         max = 50,
                                         value = 30),
                             
                             # input pour la couleur
-                            colourInput(inputId = "color", label = "Couleur :", value = "purple"),
+                            colourInput(inputId = "color", label = "Couleur :", value = "277042"),
                             
                             # titre du graphique
                             textInput(inputId = "titre", label = "Titre :", value = "Histogramme"),

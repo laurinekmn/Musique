@@ -23,7 +23,7 @@ shinyServer(function(input, output) {
   musique$tempo <- as.numeric(musique$tempo)
   
   # On prend les lignes sans NA
-  musique <- musique[complete.cases(musique),]
+  musique <- musique[stats::complete.cases(musique),]
   
   output$distPlot <- renderAmCharts({
 
@@ -32,8 +32,9 @@ shinyServer(function(input, output) {
     bins <- trunc(seq(min(x), max(x) + 0.01, length.out = input$bins + 1)*100)/100 # troncature
 
     # use amHist
-    amHist(x = x, control_hist = list(breaks = bins),
-           col = input$color, main = input$titre,
+
+    amHist(x = x, control_hist = list(breaks = bins), 
+           col = input$color, border = "FFFFFF", main = input$titre, ylab = "Frequency",
            export = TRUE, zoom = TRUE)
   })
 

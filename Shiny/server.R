@@ -33,7 +33,7 @@ shinyServer(function(input, output) {
     
     # use amHist
     amHist(x = x, control_hist = list(breaks = bins), 
-           col = input$color, border = "FFFFFF", main = input$titre, ylab = "Fréquence",
+           col = input$color, border = "FFFFFF", main = input$titre, ylab = "Frequency",
            export = TRUE, zoom = TRUE)
   })
 

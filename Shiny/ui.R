@@ -10,61 +10,96 @@
 library(shiny)
 library(colourpicker)
 library(rAmCharts)
+library(bslib)
 
 musique <- read.csv("../musique.csv", sep=";")
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
-
-    # Application title
-    #titlePanel("Musique"),
-  navbarPage("Musique maestro !",
-
-        # Premier onglet : visualisation graphique des données
-        tabPanel("Visualisation", 
-                 
-                 fluidRow(
-                   # premier colonne
-                   column(width = 3, 
-                          # wellPanel pour griser
-                          wellPanel(
-                            titlePanel("Paramètres de l'histogramme"),
-                            sliderInput("bins",
-                                        "Nombre de barres :",
-                                        min = 1,
-                                        max = 50,
-                                        value = 30),
-                            
-                            # input pour la couleur
-                            colourInput(inputId = "color", label = "Couleur :", value = "277042"),
-                            
-                            # titre du graphique
-                            textInput(inputId = "titre", label = "Titre :", value = "Histogramme"),
-                            
-                            # selection de la colonne
-                            radioButtons(inputId = "var", label = "Variable : ", choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)])
-                          )
-                   ), 
-                   # deuxieme colonne
-                   column(width = 9, 
-                          #tabsetPanel(
-                            tabPanel("Histogramme", 
-                                     # plotOutput -> amChartsOutput
-                                     amChartsOutput("distPlot"),
-                                     # classes (div centrée)
-                                     div(textOutput("n_bins"), align = "center")
-                            )#,
-                          #   tabPanel("Boxplot", amChartsOutput("boxplot"))
-                          # )
-                   )
-                 )
-        ),
-
-        # Show a plot of the generated distribution
-        # mainPanel(
-        #     plotOutput("distPlot")
-        # )
-    )
+  theme = bs_theme(version = 4, 
+                   bootswatch = "minty", 
+                   bg = "GhostWhite", 
+                   fg = "Teal"),
+  
+  # Application title
+  #titlePanel("Musique"),
+  navbarPage("All that jazz",
+             
+             
+             #1e onglet : 
+             tabPanel("Home",
+               
+               
+             ),
+             # 2e onglet : dataset description (features explanation)
+             tabPanel("Data description", 
+                      fluidRow(
+                        
+                        
+                      )
+               
+               
+             ),
+             
+             # 3e onglet : visualisation graphique des données
+             tabPanel("Visualization", 
+                      
+                      fluidRow(
+                        # premier colonne
+                        column(width = 3, 
+                               # wellPanel pour griser
+                               wellPanel(
+                                 titlePanel("Histogram editing"),
+                                 sliderInput("bins",
+                                             "Number of bins:",
+                                             min = 1,
+                                             max = 50,
+                                             value = 30),
+                                 
+                                 # input pour la couleur
+                                 colourInput(inputId = "color", label = "Color:", value = "C1CC3A"), #277042
+                                 
+                                 # titre du graphique
+                                 textInput(inputId = "titre", label = "Main title:", value = "Histogram"),
+                                 
+                                 # selection de la colonne
+                                 radioButtons(inputId = "var", label = "Feature: ", choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)])
+                               )
+                        ), 
+                        # deuxieme colonne
+                        column(width = 9, 
+                               #tabsetPanel(
+                               tabPanel("Histogram", 
+                                        # plotOutput -> amChartsOutput
+                                        amChartsOutput("distPlot"),
+                                        # classes (div centrée)
+                                        div(textOutput("n_bins"), align = "center")
+                               )#,
+                               #   tabPanel("Boxplot", amChartsOutput("boxplot"))
+                               # )
+                        )
+                      )
+             ),
+             
+             # 4e onglet : ACP / Classification
+             tabPanel("PCA & clustering",
+               
+               
+               
+             ),
+             
+             # 5e onglet : prediction with linear regression model
+             tabPanel("Linear regression prediction model",
+                      
+               
+               
+               
+               )
+             # Show a plot of the generated distribution
+             # mainPanel(
+             #     plotOutput("distPlot")
+             # )
+  )
 ))
 
 

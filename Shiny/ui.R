@@ -11,7 +11,6 @@ library(shiny)
 library(colourpicker)
 library(rAmCharts)
 library(bslib)
-print("test")
 
 musique <- read.csv("../musique.csv", sep=";")
 

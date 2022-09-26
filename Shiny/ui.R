@@ -11,6 +11,8 @@ library(shiny)
 library(colourpicker)
 library(rAmCharts)
 
+musique <- read.csv("../musique.csv", sep=";")
+
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
@@ -64,3 +66,5 @@ shinyUI(fluidPage(
         # )
     )
 ))
+
+

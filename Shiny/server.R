@@ -23,7 +23,7 @@ shinyServer(function(input, output) {
   musique$tempo <- as.numeric(musique$tempo)
   
   # On prend les lignes sans NA
-  musique <- musique[complete.cases(musique),]
+  musique <- musique[stats::complete.cases(musique),]
   
   output$distPlot <- renderAmCharts({
     

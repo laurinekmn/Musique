@@ -26,14 +26,14 @@ shinyServer(function(input, output) {
   musique <- musique[complete.cases(musique),]
   
   output$distPlot <- renderAmCharts({
-    
+
     # generate bins based on input$bins from ui.R
-    x    <- musique[, input$var] 
+    x    <- musique[, input$var]
     bins <- trunc(seq(min(x), max(x) + 0.01, length.out = input$bins + 1)*100)/100 # troncature
-    
+
     # use amHist
-    amHist(x = x, control_hist = list(breaks = bins), 
-           col = input$color, main = input$titre, 
+    amHist(x = x, control_hist = list(breaks = bins),
+           col = input$color, main = input$titre,
            export = TRUE, zoom = TRUE)
   })
 

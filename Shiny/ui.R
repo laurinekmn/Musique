@@ -8,6 +8,10 @@
 #
 
 library(shiny)
+library(colourpicker)
+library(rAmCharts)
+
+musique <- read.csv("../musique.csv", sep=";")
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -17,11 +21,11 @@ shinyUI(fluidPage(
   navbarPage("Musique maestro !",
 
         # Premier onglet : visualisation graphique des données
-        tabPanel("Visualisation", 
-                 
+        tabPanel("Visualisation",
+
                  fluidRow(
                    # premier colonne
-                   column(width = 3, 
+                   column(width = 3,
                           # wellPanel pour griser
                           wellPanel(
                             sliderInput("bins",
@@ -29,21 +33,21 @@ shinyUI(fluidPage(
                                         min = 1,
                                         max = 50,
                                         value = 30),
-                            
+
                             # input pour la couleur
                             colourInput(inputId = "color", label = "Couleur :", value = "purple"),
-                            
+
                             # titre du graphique
                             textInput(inputId = "titre", label = "Titre :", value = "Histogramme"),
-                            
+
                             # selection de la colonne
                             radioButtons(inputId = "var", label = "Variable : ", choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)])
                           )
-                   ), 
+                   ),
                    # deuxieme colonne
-                   column(width = 9, 
+                   column(width = 9,
                           #tabsetPanel(
-                            tabPanel("Histogramme", 
+                            tabPanel("Histogramme",
                                      # plotOutput -> amChartsOutput
                                      amChartsOutput("distPlot"),
                                      # classes (div centrée)
@@ -59,5 +63,5 @@ shinyUI(fluidPage(
         # mainPanel(
         #     plotOutput("distPlot")
         # )
-    )
+     )
 ))

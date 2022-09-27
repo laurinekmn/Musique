@@ -97,17 +97,18 @@ shinyUI(fluidPage(
              
              # 5e onglet : prediction with linear regression model
              tabPanel("Linear regression prediction model",
-                      
+
                       fluidRow(
                         # premier colonne
-                        column(width = 3, 
+                        column(width = 3,
+                               
                                # wellPanel pour griser
                                wellPanel(
                                  titlePanel("Model editing"),
                                  selectInput(
-                                   inputId = "Var_quanti",
-                                   label = "Variables quanti you have",
-                                   choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)],
+                                   inputId = "vars_quanti",
+                                   label = "Select model quanti variables",
+                                   choices = colnames(musique)[c(5:9, 11:12, 14:15, 17)],
                                    selected = NULL,
                                    multiple = TRUE,
                                    selectize = TRUE,
@@ -115,22 +116,71 @@ shinyUI(fluidPage(
                                    size = NULL
                                  ),
                                  selectInput(
-                                   inputId = "Var_quali",
-                                   label = "Variables quali you have",
+                                   inputId = "vars_quali",
+                                   label = "Select model quali variables",
                                    choices = colnames(musique)[c(10, 13, 18)],
                                    selected = NULL,
                                    multiple = TRUE,
                                    selectize = TRUE,
                                    width = NULL,
                                    size = NULL
-                                 )
+                                 ),
+                                 # selectInput(
+                                 #   inputId = "vars_model",
+                                 #   label = "Select model variables",
+                                 #   choices = colnames(musique)[c(5:9, 11:12, 14:15, 17, 10, 13, 18)],
+                                 #   selected = NULL,
+                                 #   multiple = TRUE,
+                                 #   selectize = TRUE,
+                                 #   width = NULL,
+                                 #   size = NULL
+                                 # ),
+                                 sliderInput(
+                                   "TrainTest",
+                                   label = h3("Train/Test Split %"),
+                                   min = 0,
+                                   max = 100,
+                                   value = 70
+                                 ),
+                                 
+                                 submitButton("Update View", icon("refresh"))
                                )
                         ),
+                        # deuxieme colonne
+                        column(width = 9,
+                               #tabsetPanel(
+                               # tabPanel("Parametre choice",
+                               #          numericInput(inputId = "Ac", label = "Acousticness", value = NA, min = 0, max = 1, step = NA,
+                               #                       width = NULL)
+                               # )
+                               navbarPage("Model",
+                                          
+                                          tabPanel("Summary",
+                                                   verbatimTextOutput("summary_model")
+                                          ),
+                                          
+                                          tabPanel("Graph",
+                                                   plotlyOutput("graph")
+                                          ),
+                                          
+                                          tabPanel("DataTable",
+                                                   DT::dataTableOutput("DataTable")
+                                                   ),
+                                          tabPanel("Graph residual",
+                                                   plotlyOutput("graph_residual")
+                                                   )
+                                          
+                               
+                               )
+
+                        ),
                         
+
                       )
-                      
-                      
+
+
              )
+
              # Show a plot of the generated distribution
              # mainPanel(
              #     plotOutput("distPlot")

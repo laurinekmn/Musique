@@ -125,16 +125,7 @@ shinyUI(fluidPage(
                                    width = NULL,
                                    size = NULL
                                  ),
-                                 # selectInput(
-                                 #   inputId = "vars_model",
-                                 #   label = "Select model variables",
-                                 #   choices = colnames(musique)[c(5:9, 11:12, 14:15, 17, 10, 13, 18)],
-                                 #   selected = NULL,
-                                 #   multiple = TRUE,
-                                 #   selectize = TRUE,
-                                 #   width = NULL,
-                                 #   size = NULL
-                                 # ),
+                                 
                                  sliderInput(
                                    "TrainTest",
                                    label = h3("Train/Test Split %"),
@@ -148,11 +139,7 @@ shinyUI(fluidPage(
                         ),
                         # deuxieme colonne
                         column(width = 9,
-                               #tabsetPanel(
-                               # tabPanel("Parametre choice",
-                               #          numericInput(inputId = "Ac", label = "Acousticness", value = NA, min = 0, max = 1, step = NA,
-                               #                       width = NULL)
-                               # )
+   
                                navbarPage("Model",
                                           
                                           tabPanel("Summary",
@@ -181,10 +168,7 @@ shinyUI(fluidPage(
 
              )
 
-             # Show a plot of the generated distribution
-             # mainPanel(
-             #     plotOutput("distPlot")
-             # )
+
   )
 ))
 

@@ -59,7 +59,15 @@ shinyServer(function(input, output) {
     # lm(popularity~vars, data = musique)
     vars_quanti <- as.matrix(musique[, input$vars_quanti])
     vars_quali <- as.matrix(musique[, input$vars_quali])
-    lm(popularity~vars_quanti + vars_quali + vars_quanti:vars_quali, data = musique)
+    if (!is.null(input$vars_quali)){
+      if (!is.null(input$vars_quanti)){
+        lm(popularity~vars_quanti + vars_quali + vars_quanti:vars_quali, data = musique)
+      }else{
+        lm(popularity~ vars_quali, data = musique)
+      }
+    }else{
+      lm(popularity~vars_quanti, data = musique)
+    }
   })
   
   # Linear Regression output

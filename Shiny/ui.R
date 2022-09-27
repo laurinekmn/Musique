@@ -99,12 +99,38 @@ shinyUI(fluidPage(
              tabPanel("Linear regression prediction model",
                       
                       fluidRow(
-                        
+                        # premier colonne
+                        column(width = 3, 
+                               # wellPanel pour griser
+                               wellPanel(
+                                 titlePanel("Model editing"),
+                                 selectInput(
+                                   inputId = "Var_quanti",
+                                   label = "Variables quanti you have",
+                                   choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)],
+                                   selected = NULL,
+                                   multiple = TRUE,
+                                   selectize = TRUE,
+                                   width = NULL,
+                                   size = NULL
+                                 ),
+                                 selectInput(
+                                   inputId = "Var_quali",
+                                   label = "Variables quali you have",
+                                   choices = colnames(musique)[c(10, 13, 18)],
+                                   selected = NULL,
+                                   multiple = TRUE,
+                                   selectize = TRUE,
+                                   width = NULL,
+                                   size = NULL
+                                 )
+                               )
+                        ),
                         
                       )
-               
-               
-               )
+                      
+                      
+             )
              # Show a plot of the generated distribution
              # mainPanel(
              #     plotOutput("distPlot")

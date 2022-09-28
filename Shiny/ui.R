@@ -110,7 +110,7 @@ shinyUI(fluidPage(
                                    inputId = "vars_quanti",
                                    label = "Select model quanti variables",
                                    choices = colnames(musique)[c(5:9, 11:12, 14:15, 17)],
-                                   selected = NULL,
+                                   selected = "energy",
                                    multiple = TRUE,
                                    selectize = TRUE,
                                    width = NULL,

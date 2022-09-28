@@ -324,9 +324,10 @@ shinyUI(fluidPage(
                                                      )
                                                      
                                                      
-                                                   )
-                                                   # verbatimTextOutput("prediction"),
-                                                    #verbatimTextOutput("predictions")
+                                                   ),
+                                                   verbatimTextOutput("prediction"),
+                                                   verbatimTextOutput("test")
+                                                   
                                                    ),
                                           
                                           

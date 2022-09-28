@@ -124,23 +124,23 @@ shinyServer(function(input, output) {
                                tempo = input$Tempo, valence = input$Val,
                                music_genre = input$Genre)})
     
-    mod <- reactive({mod <- lm(popularity ~ acousticness + danceability + 
-                                              duration_ms + energy + instrumentalness + 
-                                              liveness + loudness + speechiness + tempo + 
-                                              valence + acousticness:music_genre + 
-                                              danceability:music_genre + duration_ms:music_genre + 
-                                              energy:music_genre + instrumentalness:music_genre + 
-                                              liveness:music_genre + loudness:music_genre + 
-                                              speechiness:music_genre + tempo:music_genre + 
-                                              valence:music_genre, data = musique)})
-    
-    model_prediction <- reactive({RcmdrMisc::stepwise(mod, direction = "forward/backward", criterion = "AIC", trace = FALSE)})
-    
-    output$prediction <- renderPrint({predict(model_prediction(), data_pred())})
-    output$test <- renderPrint({model()})
     
   })
   
+  mod <- reactive({mod <- lm(popularity ~ acousticness + danceability + 
+                               duration_ms + energy + instrumentalness + 
+                               liveness + loudness + speechiness + tempo + 
+                               valence + acousticness:music_genre + 
+                               danceability:music_genre + duration_ms:music_genre + 
+                               energy:music_genre + instrumentalness:music_genre + 
+                               liveness:music_genre + loudness:music_genre + 
+                               speechiness:music_genre + tempo:music_genre + 
+                               valence:music_genre, data = musique)})
+  
+  model_prediction <- reactive({RcmdrMisc::stepwise(mod, direction = "forward/backward", criterion = "AIC", trace = FALSE)})
+  
+  output$prediction <- renderPrint({predict(model_prediction(), data_pred())})
+  output$test <- renderPrint({summary(model())})
   
   
   

@@ -327,9 +327,9 @@ shinyUI(fluidPage(
                                                    ),
                                                    submitButton("Update View", icon("refresh")),
                                                    verbatimTextOutput("prediction"),
-                                                   #verbatimTextOutput("test")
+                                                   verbatimTextOutput("test")
                                                    #DT::dataTableOutput("data_pred")
-                                                   DT::dataTableOutput("test")
+                                                   #DT::dataTableOutput("test")
                                                    
                                                    ),
                                           

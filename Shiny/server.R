@@ -115,32 +115,81 @@ shinyServer(function(input, output) {
                                                                                                                                                      tickfont = list(
                                                                                                                                                        family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white")) 
 
-    # Données de prédiction entrées par l'utilisateur
-    data_pred <- reactive({DT::datatable(acousticness = input$Ac, danceability = input$Dan, 
-                               duration_ms = input$Dur, energy = input$En, 
-                               instrumentalness = input$Ins, key = input$Key,
-                               liveness = input$Live, loudness = input$Lou,
-                               mode = input$mode, speechness = input$Spee, 
-                               tempo = input$Tempo, valence = input$Val,
-                               music_genre = input$Genre)})
+  
     
     
   })
   
-  mod <- reactive({mod <- lm(popularity ~ acousticness + danceability + 
-                               duration_ms + energy + instrumentalness + 
-                               liveness + loudness + speechiness + tempo + 
-                               valence + acousticness:music_genre + 
-                               danceability:music_genre + duration_ms:music_genre + 
-                               energy:music_genre + instrumentalness:music_genre + 
-                               liveness:music_genre + loudness:music_genre + 
-                               speechiness:music_genre + tempo:music_genre + 
-                               valence:music_genre, data = musique)})
   
+  # Données de prédiction entrées par l'utilisateur
+  # output$data_pred <- renderDataTable({data.frame(acousticness = input$Ac, danceability = input$Dan,
+  #                                      duration_ms = input$Dur, energy = input$En,
+  #                                      instrumentalness = input$Ins, key = input$Key,
+  #                                      liveness = input$Live, loudness = input$Lou,
+  #                                      mode = input$mode, speechness = input$Spee,
+  #                                      tempo = input$Tempo, valence = input$Val,
+  #                                      music_genre = input$Genre, replace = TRUE)})
+  data_pred <- reactive({data.frame(acousticness = input$Ac, danceability = input$Dan,
+                                                  duration_ms = input$Dur, energy = input$En,
+                                                  instrumentalness = input$Ins, key = input$Key,
+                                                  liveness = input$Live, loudness = input$Lou,
+                                                  mode = input$mode, speechness = input$Spee,
+                                                  tempo = input$Tempo, valence = input$Val,
+                                                  music_genre = input$Genre)})
+  
+
+
+  #nb_vars <- reactive({ncol(musique[input$vars_quanti])})
+  #vars_quanti <- reactive({as.matrix(musique_train()[, input$vars_quanti])})
+  variables <- reactive({c("instance_id", "artist_name", "track_name", "popularity", "Ac", 
+                 "Dan", "Dur", "En", "Ins", "Key", "Live", "Lou", "mode", "Spee", 
+                 "Tempo", "obtained_date", "Val")})
+  # data_pre <- reactive({
+  #   data_pred <- data.frame()
+  #   vars_quanti <- as.matrix(musique[, input$vars_quanti])
+  #   vars_quali <- as.matrix(musique[, input$vars_quali])
+  #   for (k in 1:length(vars_quanti)){
+  #     nom_var <- colnames(vars_quanti[k])
+  #     data_pred <- cbind(data_pred, data.frame(colnames(nom_var = variable[which(names(musique)==nom_var)])))
+  #   }
+  #   as.data.frame(data_pred)
+  # })
+  # 
+  # for (k in (1:length(variables[input$vars_quanti]))){
+  #   vars <- colnames(musique[input$vars_quanti])
+  #   var <- do.call(print,list(vars[k]))
+  #   tmp <- data.frame(var = input$do.call(print,list(vars[k])))
+  #   data_pre <- reactive({cbind(data_pre, tmp)})
+  # }
+  
+  mod <- reactive({
+    vars_quanti <- as.matrix(musique[, input$vars_quanti])
+    vars_quali <- as.matrix(musique[, input$vars_quali])
+    if (!is.null(input$vars_quali)){
+      if (!is.null(input$vars_quanti)){
+        lm(popularity~vars_quanti + vars_quali + vars_quanti:vars_quali, data = musique)
+      }else{
+        lm(popularity~ vars_quali, data = musique)
+      }
+    }else{
+      lm(popularity~vars_quanti, data = musique)
+    }
+  })
+  # mod <- reactive({mod <- lm(popularity ~ acousticness + danceability + 
+  #                              duration_ms + energy + instrumentalness + 
+  #                              liveness + loudness + speechiness + tempo + 
+  #                              valence + acousticness:music_genre + 
+  #                              danceability:music_genre + duration_ms:music_genre + 
+  #                              energy:music_genre + instrumentalness:music_genre + 
+  #                              liveness:music_genre + loudness:music_genre + 
+  #                              speechiness:music_genre + tempo:music_genre + 
+  #                              valence:music_genre, data = musique)})
+  # 
   model_prediction <- reactive({RcmdrMisc::stepwise(mod, direction = "forward/backward", criterion = "AIC", trace = FALSE)})
   
   output$prediction <- renderPrint({predict(model_prediction(), data_pred())})
-  output$test <- renderPrint({summary(model())})
+  #output$test <- renderPrint({data_pre})
+  output$test <- renderDataTable({data_pred()})
   
   
   

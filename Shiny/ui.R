@@ -170,7 +170,7 @@ shinyUI(fluidPage(
                                                      #              min = 0,
                                                      #              max = 1,
                                                      #              step = NA),
-                                                     
+                                                     #input.Ac = NA
                                                      conditionalPanel(
                                                        "input.vars_quanti.indexOf('acousticness') >= 0",
                                                        sliderInput(
@@ -327,7 +327,9 @@ shinyUI(fluidPage(
                                                    ),
                                                    submitButton("Update View", icon("refresh")),
                                                    verbatimTextOutput("prediction"),
-                                                   verbatimTextOutput("test")
+                                                   #verbatimTextOutput("test")
+                                                   #DT::dataTableOutput("data_pred")
+                                                   DT::dataTableOutput("test")
                                                    
                                                    ),
                                           

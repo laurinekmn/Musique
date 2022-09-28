@@ -258,20 +258,28 @@ shinyUI(fluidPage(
                                                          value = 0.5
                                                        )
                                                      ),
-                                                     # sliderInput(
-                                                     #   "Tempo",
-                                                     #   label = ("Tempo"),
-                                                     #   min = 0,
-                                                     #   max = 1,
-                                                     #   value = 0.5
-                                                     # ),
-                                                     # sliderInput(
-                                                     #   "Dur",
-                                                     #   label = ("Duration_ms"),
-                                                     #   min = 0,
-                                                     #   max = 1,
-                                                     #   value = 0.5
-                                                     # ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('valence') >= 0",
+                                                       sliderInput(
+                                                         "Tempo",
+                                                         label = ("Tempo"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('valence') >= 0",
+                                                       sliderInput(
+                                                         "Dur",
+                                                         label = ("Duration_ms"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
                                                      
                                                      conditionalPanel(
                                                        "input.vars_quali.indexOf('music_genre') >= 0",
@@ -314,7 +322,11 @@ shinyUI(fluidPage(
                                                          size = NULL
                                                        )
                                                      )
+                                                     
+                                                     
                                                    )
+                                                   # verbatimTextOutput("prediction"),
+                                                    #verbatimTextOutput("predictions")
                                                    ),
                                           
                                           

@@ -78,7 +78,7 @@ shinyServer(function(input, output) {
                                  lengthMenu = c(20, 100, 1000, nrow(musique)), 
                                  #scrollY = 300, 
                                  scrollCollapse = TRUE
-                                 )) %>% formatStyle(
+                                 )) %>% DT::formatStyle(
                                    'residuals',
                                    backgroundColor = styleInterval(c(-20, -10, 10, 20), c("red","orange", 'green', 'orange', "red"))
                                    #color = styleInterval(c(1,2), c('black', 'white', "white"))
@@ -115,7 +115,29 @@ shinyServer(function(input, output) {
                                                                                                                                                      tickfont = list(
                                                                                                                                                        family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white")) 
 
+    # Données de prédiction entrées par l'utilisateur
+    data_pred <- reactive({DT::datatable(acousticness = input$Ac, danceability = input$Dan, 
+                               duration_ms = input$Dur, energy = input$En, 
+                               instrumentalness = input$Ins, key = input$Key,
+                               liveness = input$Live, loudness = input$Lou,
+                               mode = input$mode, speechness = input$Spee, 
+                               tempo = input$Tempo, valence = input$Val,
+                               music_genre = input$Genre)})
     
+    mod <- reactive({mod <- lm(popularity ~ acousticness + danceability + 
+                                              duration_ms + energy + instrumentalness + 
+                                              liveness + loudness + speechiness + tempo + 
+                                              valence + acousticness:music_genre + 
+                                              danceability:music_genre + duration_ms:music_genre + 
+                                              energy:music_genre + instrumentalness:music_genre + 
+                                              liveness:music_genre + loudness:music_genre + 
+                                              speechiness:music_genre + tempo:music_genre + 
+                                              valence:music_genre, data = musique)})
+    
+    model_prediction <- reactive({RcmdrMisc::stepwise(mod, direction = "forward/backward", criterion = "AIC", trace = FALSE)})
+    
+    output$prediction <- renderPrint({predict(model_prediction(), data_pred())})
+    output$test <- renderPrint({model()})
     
   })
   

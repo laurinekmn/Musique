@@ -325,6 +325,7 @@ shinyUI(fluidPage(
                                                      
                                                      
                                                    ),
+                                                   submitButton("Update View", icon("refresh")),
                                                    verbatimTextOutput("prediction"),
                                                    verbatimTextOutput("test")
                                                    

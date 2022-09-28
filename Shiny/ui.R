@@ -154,8 +154,13 @@ shinyUI(fluidPage(
                                           tabPanel("DataTable",
                                                    DT::dataTableOutput("DataTable")
                                                    ),
+                                          
                                           tabPanel("Graph residual",
                                                    plotlyOutput("graph_residual")
+                                                   ),
+                                          
+                                          tabPanel("Your prediction",
+                                                   
                                                    )
                                           
                                

@@ -14,6 +14,9 @@ library(bslib)
 library(plotly)
 
 musique <- read.csv("../musique.csv", sep=";")
+musique$music_genre <- as.factor(musique$music_genre)
+musique$key <- as.factor(musique$key)
+musique$mode <- as.factor(musique$mode)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -160,8 +163,124 @@ shinyUI(fluidPage(
                                                    ),
                                           
                                           tabPanel("Your prediction",
-                                                   
+                                                   fluidRow(
+                                                     # numericInput("Ac",
+                                                     #              label="Acousticness",
+                                                     #              value = NA,
+                                                     #              min = 0,
+                                                     #              max = 1,
+                                                     #              step = NA),
+                                                     # numericInput("En",
+                                                     #              label="Energy",
+                                                     #              value = NA,
+                                                     #              min = 0,
+                                                     #              max = 1,
+                                                     #              step = NA),
+                                                     sliderInput(
+                                                       "Ac",
+                                                       label = ("Acousticness"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     sliderInput(
+                                                       "En",
+                                                       label = ("Energy"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     sliderInput(
+                                                       "Ins",
+                                                       label = ("Instrumentalness"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     sliderInput(
+                                                       "Dan",
+                                                       label = ("Danceability"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     sliderInput(
+                                                       "Lou",
+                                                       label = ("Loudness"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     sliderInput(
+                                                       "Live",
+                                                       label = ("Liveness"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     sliderInput(
+                                                       "Spee",
+                                                       label = ("Speechness"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     sliderInput(
+                                                       "Val",
+                                                       label = ("Valence"),
+                                                       min = 0,
+                                                       max = 1,
+                                                       value = 0.5
+                                                     ),
+                                                     # sliderInput(
+                                                     #   "Tempo",
+                                                     #   label = ("Tempo"),
+                                                     #   min = 0,
+                                                     #   max = 1,
+                                                     #   value = 0.5
+                                                     # ),
+                                                     # sliderInput(
+                                                     #   "Dur",
+                                                     #   label = ("Duration_ms"),
+                                                     #   min = 0,
+                                                     #   max = 1,
+                                                     #   value = 0.5
+                                                     # ),
+                                                     selectInput(
+                                                       inputId = "Genre",
+                                                       label = "Music genre",
+                                                       choices = levels(musique$music_genre)[-1],
+                                                       selected = NULL,
+                                                       multiple = FALSE,
+                                                       selectize = TRUE,
+                                                       width = NULL,
+                                                       size = NULL
+                                                     ),
+                                                     selectInput(
+                                                       inputId = "Key",
+                                                       label = "Key",
+                                                       choices = levels(musique$key),
+                                                       selected = NULL,
+                                                       multiple = FALSE,
+                                                       selectize = TRUE,
+                                                       width = NULL,
+                                                       size = NULL
+                                                     ),
+                                                     selectInput(
+                                                       inputId = "mode",
+                                                       label = "Mode",
+                                                       choices = levels(musique$mode),
+                                                       selected = NULL,
+                                                       multiple = FALSE,
+                                                       selectize = TRUE,
+                                                       width = NULL,
+                                                       size = NULL
+                                                     )
                                                    )
+                                                   ),
+                                          
+                                          
+                                                  
                                           
                                
                                )

@@ -42,8 +42,8 @@ shinyServer(function(input, output) {
   
   # Split train test
   
-   musique_train <- reactive({musique %>% dplyr::sample_frac(input$TrainTest/100)})
-   musique_test <- reactive({dplyr::anti_join(musique, musique_train())})
+   musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
+   musique_test <- reactive(subset({dplyr::anti_join(musique, musique_train())}))
    
   
   # Linear model
@@ -72,7 +72,7 @@ shinyServer(function(input, output) {
     
     DT::datatable(musique_test() %>% mutate(predicted = round(predict(model())), residuals = round(residuals(model()))) %>% select(popularity, predicted, residuals), 
                   rownames = FALSE, colnames = c('actual popularity', 'predicted popularity', 'residuals'), 
-                  #extensions = c('Buttons', 'Responsive'), 
+                  extensions = c('Buttons', 'Responsive'), 
                   options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrt', 
                                  buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, 
                                  lengthMenu = c(20, 100, 1000, nrow(musique)), 
@@ -85,7 +85,7 @@ shinyServer(function(input, output) {
   # Plotly Scatterplot: predicted vs actual popularity
   output$graph <- renderPlotly({
     
-    plot_ly(data = musique_test(), y = ~predict(model()), x = ~popularity,
+    plot_ly(data = musique_test(), y = ~predict(model(), newdata = musique_test()), x = ~popularity,
             type = "scatter", mode = "markers",
             marker = list(size = 5,
                           color = '#FFFFFF',

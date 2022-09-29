@@ -16,7 +16,7 @@ musique <- read.csv("../musique.csv", sep=";")
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
-
+  
   theme = bs_theme(version = 4, 
                    bootswatch = "minty", 
                    bg = "GhostWhite", 
@@ -48,23 +48,23 @@ shinyUI(fluidPage(
                                                     letter-spacing: 3px;
                                                     text-align: center;
                                                     }"
-                                                    )
+                               )
                                ),
                                textOutput('HomeTitle2'),
                                tags$head(tags$style("#HomeTitle2{color: 1d3624;
-                                                    font-size: 40px;
+                                                    font-size: 44px;
                                                     font-family: Georgia,serif;
                                                     font-style: bold;
                                                     text-align: center;
                                                     }"
-                                                    )
                                )
+                               )
+                               
+                               
+                               
+                        )
                         
-                        
-                        
-                      )
-               
-             )),
+                      )),
              # 2e onglet : dataset description (features explanation)
              tabPanel("Data description", 
                       fluidRow(
@@ -80,7 +80,7 @@ shinyUI(fluidPage(
                                    "Music Dataset on Kaggle")
                                  
                                )
-                               ),
+                        ),
                         column(width = 8,
                                textOutput('VisuTitle1'),
                                tags$head(tags$style("#VisuTitle1{color : 1d3624;
@@ -88,7 +88,7 @@ shinyUI(fluidPage(
                                                     font-family: Georgia,serif;
                                                     font-style: bold;
                                                     }"
-                                                    )
+                               )
                                ),
                                br(),
                                textOutput('VisuPara1'),
@@ -99,6 +99,38 @@ shinyUI(fluidPage(
                                                     }"
                                )
                                ),
+                               br(),
+                               textOutput('VisuTitle2'),
+                               tags$head(tags$style("#VisuTitle2{color : 1d3624;
+                                                    font-size: 30px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                                                    )
+                               ), 
+                               br(),
+                               textOutput('VisuPara2'),
+                               tags$ul(
+                                 tags$li("Rows with NAs were removed",
+                                         # tags$style("{color: black;
+                                         #            font-size: 18px;
+                                         #            font-family: Arial,sans-serif;
+                                         #            font-style: normal;
+                                         #            }"
+                                         #   
+                                         # )
+                                         ),
+                                 tags$li("Mode, key, danceability, energy, popularity and valence were converted as factor"),
+                                 tags$li("Other features were considered as numeric")
+                                 
+                               ),
+                               tags$head(tags$style("#VisuPara2{color : black;
+                                                    font-size: 18px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }"
+                               )
+                               )
                         ), 
                         column(width = 1)
                       )
@@ -150,8 +182,8 @@ shinyUI(fluidPage(
                         
                         
                       )
-               
-               
+                      
+                      
              ),
              
              # 5e onglet : prediction with linear regression model
@@ -161,9 +193,9 @@ shinyUI(fluidPage(
                         
                         
                       )
-               
-               
-               )
+                      
+                      
+             )
              # Show a plot of the generated distribution
              # mainPanel(
              #     plotOutput("distPlot")

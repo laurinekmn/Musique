@@ -29,11 +29,13 @@ shinyServer(function(input, output) {
   
   # Home text outputs
   output$HomeTitle1 <- renderText({"WELCOME TO"})
-  output$HomeTitle2 <- renderText({"All that jazz"})
+  output$HomeTitle2 <- renderText({"All that Jazz"})
 
   # Data description text outputs
   output$VisuTitle1 <- renderText({paste("General structure of the dataset")})
   output$VisuPara1 <- renderText({paste("This dataset has xx lines and yy columns. Each line corresponds to a song identified by an unique id and described by features. The features are described below.")})
+  output$VisuTitle2 <- renderText({paste("Data pre-processing")})
+  output$VisuPara2 <- renderText({paste("Before the start of the analysis, the dataset has been preprocessed.")})
   
   # Visualisation 
   output$distPlot <- renderAmCharts({

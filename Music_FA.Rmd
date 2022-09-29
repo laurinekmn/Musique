@@ -1,0 +1,64 @@
+---
+title: "Factor Analysis on Music Dataset"
+author: "Laurine KOMENDANCZYK"
+date: "2022-09-29"
+output: html_document
+---
+
+### Dataset importation
+```{r}
+library(data.table)
+music <- fread("musique.csv", sep=";", dec=".")
+
+dim(music)
+head(music)
+summary(music)
+
+music[,list("artist_name","track_name", "instance_id", "key", "mode", "obtained_date", "music_genre"):=lapply(.SD, as.factor),.SDcols=c("artist_name","track_name", "instance_id", "key", "mode", "obtained_date", "music_genre")]
+
+
+music$tempo=as.numeric(music$tempo)
+music$artist_name = as.factor(music$artist_name)
+music$track_name = as.factor(music$track_name)
+music$instance_id = as.factor(music$instance_id)
+music$key = as.factor(music$key)
+music$mode = as.factor(music$mode)
+music$obtained_date = as.factor(music$obtained_date)
+music$music_genre = as.factor(music$music_genre)
+music$acousticness = as.numeric(music$acousticness)
+music$instrumentalness = as.numeric(music$instrumentalness)
+
+```
+### Nettoyage du jeu de données
+```{r}
+music <- na.omit(music)
+music <- music[which(music$duration_ms>0)]
+dim(music)
+
+
+# vérif que l'id est bien unique
+music[,list(nbr =.N),by=instance_id][which(nbr>1)]
+
+# musiques en double ? 
+music[,list(nbr =.N), by=list(artist_name, track_name)][which(nbr>1)]
+anyDuplicated(music[,-popularity])
+
+music2 <- music[,list(new_id = instance_id,popularity_mean = mean(popularity)),by=list(artist_name,track_name) ]
+music2[,new_id]
+music2[,list(nbr =.N, new_id, popularity_mean), by=list(artist_name, track_name)][which(nbr>1)]
+
+```
+il semble que des combinaisons (artist_name, track_name) soit en double ou en triple. dû au fait qu'un titre sort parfois en single et en album.s
+on choisit donc pour ces titres de ne garder qu'une ligne où la popularité est la moyenne des popularités pour cette chanson 
+
+
+### AFDM
+```{r}
+library(FactoMineR)
+library(Factoshiny)
+
+res.FAMD <- FAMD(data.frame(music2), 
+                 sup.var = c("danceability", "energy", "popularity", "valence")
+                 )
+```
+

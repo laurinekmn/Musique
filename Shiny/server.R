@@ -10,6 +10,7 @@
 library(shiny)
 library(plotly)
 library(dplyr)
+library(DT)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -67,13 +68,18 @@ shinyServer(function(input, output) {
     summary(model())
   })
   
+  # RMSE
+  output$rmse <- renderPrint({
+    paste("RMSE =",MLmetrics::RMSE(predict(model()), musique_test()$popularity)) # ajouter au shiny
+  })
+  
   # Datatable
   output$DataTable <- DT::renderDataTable({
     
     DT::datatable(musique_test() %>% mutate(predicted = round(predict(model())), residuals = round(residuals(model()))) %>% select(popularity, predicted, residuals), 
                   rownames = FALSE, colnames = c('actual popularity', 'predicted popularity', 'residuals'), 
                   extensions = c('Buttons', 'Responsive'), 
-                  options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrt', 
+                  options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrtp', 
                                  buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, 
                                  lengthMenu = c(20, 100, 1000, nrow(musique)), 
                                  #scrollY = 300, 
@@ -81,7 +87,7 @@ shinyServer(function(input, output) {
                                  )) %>% DT::formatStyle(
                                    'residuals',
                                    backgroundColor = styleInterval(c(-20, -10, 10, 20), c("red","orange", 'green', 'orange', "red"))
-                                   #color = styleInterval(c(1,2), c('black', 'white', "white"))
+                                   
                                  )
     
   })

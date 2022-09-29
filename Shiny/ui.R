@@ -151,6 +151,7 @@ shinyUI(fluidPage(
                                           ),
                                           
                                           tabPanel("Graph",
+                                                   verbatimTextOutput("rmse"),
                                                    plotlyOutput("graph")
                                           ),
                                           
@@ -339,7 +340,13 @@ shinyUI(fluidPage(
                                                          )
                                                        )
                                                        
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.model_utilise =='Best model variables'",
+                                                       
                                                      )
+                                                    
                                                    ),
                                                    submitButton("Update View", icon("refresh")),
                                                    verbatimTextOutput("prediction"),

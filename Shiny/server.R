@@ -25,6 +25,17 @@ shinyServer(function(input, output) {
   # On prend les lignes sans NA
   musique <- musique[stats::complete.cases(musique),]
   
+  output$allthatjazz <- renderText({"All that Jazz"})
+  
+  # Home text outputs
+  output$HomeTitle1 <- renderText({"WELCOME TO"})
+  output$HomeTitle2 <- renderText({"All that jazz"})
+
+  # Data description text outputs
+  output$VisuTitle1 <- renderText({paste("General structure of the dataset")})
+  output$VisuPara1 <- renderText({paste("This dataset has xx lines and yy columns. Each line corresponds to a song identified by an unique id and described by features. The features are described below.")})
+  
+  # Visualisation 
   output$distPlot <- renderAmCharts({
 
     # generate bins based on input$bins from ui.R

@@ -27,7 +27,7 @@ library(DT)
 # musique <- musique[stats::complete.cases(musique),]
 
 # Meilleur modèle
-# best_model_prediction <- 
+# best_model_prediction <- lm(popularity~., data = musique)
 #   # RcmdrMisc::stepwise(lm(popularity~.  + acousticness:music_genre +
 #   #                          danceability:music_genre + duration_ms:music_genre +
 #   #                          energy:music_genre + instrumentalness:music_genre +
@@ -62,7 +62,7 @@ shinyServer(function(input, output) {
   # On prend les lignes sans NA
   musique <- musique[stats::complete.cases(musique),]
   
-  #best_model_prediction <- lm(popularity~., data = musique)
+  best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
     
   output$distPlot <- renderAmCharts({
     
@@ -193,8 +193,8 @@ shinyServer(function(input, output) {
                                           tempo = input$Tempo2, valence = input$Val2,
                                           music_genre = input$Genre2)})
   
-  output$test <- renderPrint({data_prediction()})
-  # output$predi <- renderPrint({predict(best_model_prediction, data_prediction())})
+  #output$test <- renderPrint({data_prediction()})
+  output$predi <- renderPrint({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
 
   
   

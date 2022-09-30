@@ -133,12 +133,13 @@ shinyUI(fluidPage(
                                  sliderInput(
                                    "TrainTest",
                                    label = h3("Train/Test Split %"),
-                                   min = 0,
-                                   max = 100,
+                                   min =1,
+                                   max = 99,
                                    value = 70
                                  ),
                                  
-                                 submitButton("Update View", icon("refresh"))
+                                 #submitButton("Update View", icon("refresh"))
+                                 actionButton("goButton", "Update view", class = "btn-success", icon("refresh"))
                                )
                         ),
                         # deuxieme colonne
@@ -255,10 +256,10 @@ shinyUI(fluidPage(
                                                        ),
                                                        
                                                        conditionalPanel(
-                                                         "input.vars_quanti.indexOf('speechness') >= 0",
+                                                         "input.vars_quanti.indexOf('speechiness') >= 0",
                                                          sliderInput(
                                                            "Spee",
-                                                           label = ("Speechness"),
+                                                           label = ("Speechiness"),
                                                            min = 0,
                                                            max = 1,
                                                            value = 0.5
@@ -288,7 +289,7 @@ shinyUI(fluidPage(
                                                        ),
                                                        
                                                        conditionalPanel(
-                                                         "input.vars_quanti.indexOf('valence') >= 0",
+                                                         "input.vars_quanti.indexOf('duration_ms') >= 0",
                                                          sliderInput(
                                                            "Dur",
                                                            label = ("Duration_ms"),
@@ -318,7 +319,7 @@ shinyUI(fluidPage(
                                                            inputId = "Key",
                                                            label = "Key",
                                                            choices = levels(musique$key),
-                                                           selected = NULL,
+                                                           selected = "A",
                                                            multiple = FALSE,
                                                            selectize = TRUE,
                                                            width = NULL,
@@ -332,13 +333,15 @@ shinyUI(fluidPage(
                                                            inputId = "mode",
                                                            label = "Mode",
                                                            choices = levels(musique$mode),
-                                                           selected = NULL,
+                                                           selected = "Major",
                                                            multiple = FALSE,
                                                            selectize = TRUE,
                                                            width = NULL,
                                                            size = NULL
                                                          )
-                                                       )
+                                                       ),
+                                                       
+                                                       verbatimTextOutput("prediction")
                                                        
                                                      ),
                                                      
@@ -351,13 +354,130 @@ shinyUI(fluidPage(
                                                          min = 1,
                                                          max = 30,
                                                          value = 1
-                                                       )
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Ac2",
+                                                         label = ("Acousticness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "En2",
+                                                         label = ("Energy"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Ins2",
+                                                         label = ("Instrumentalness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Dan2",
+                                                         label = ("Danceability"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Lou2",
+                                                         label = ("Loudness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Live2",
+                                                         label = ("Liveness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Spee2",
+                                                         label = ("Speechiness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Val2",
+                                                         label = ("Valence"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Tempo2",
+                                                         label = ("Tempo"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       sliderInput(
+                                                         "Dur2",
+                                                         label = ("Duration_ms"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       ),
+                                                       
+                                                       selectInput(
+                                                         inputId = "Genre2",
+                                                         label = "Music genre",
+                                                         choices = levels(musique$music_genre)[-1],
+                                                         selected = NULL,
+                                                         multiple = FALSE,
+                                                         selectize = TRUE,
+                                                         width = NULL,
+                                                         size = NULL
+                                                       ),
+                                                       
+                                                       selectInput(
+                                                         inputId = "Key2",
+                                                         label = "Key",
+                                                         choices = levels(musique$key),
+                                                         selected = "A",
+                                                         multiple = FALSE,
+                                                         selectize = TRUE,
+                                                         width = NULL,
+                                                         size = NULL
+                                                       ),
+                                                       
+                                                       selectInput(
+                                                         inputId = "mode2",
+                                                         label = "Mode",
+                                                         choices = levels(musique$mode),
+                                                         selected = "Major",
+                                                         multiple = FALSE,
+                                                         selectize = TRUE,
+                                                         width = NULL,
+                                                         size = NULL
+                                                       ),
+                                                       
+                                                       verbatimTextOutput("test")
+                                                       
+                                                       
                                                      )
                                                     
                                                    ),
-                                                   submitButton("Update View", icon("refresh")),
-                                                   verbatimTextOutput("prediction"),
-                                                   verbatimTextOutput("test"),
+                                                   #submitButton("Update View", icon("refresh")),
+                                                   
+                                                   
                                                    
                                                    #verbatimTextOutput("predi")
                                                    #DT::dataTableOutput("data_pred")

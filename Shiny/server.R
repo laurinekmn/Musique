@@ -7,23 +7,9 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-  
-  # Importation des donnees
-  musique <- read.csv("../musique.csv", sep=";")
-  musique$music_genre <- as.factor(musique$music_genre)
-  #musique$obtained_date <- as.Date(musique$obtained_date, "%d-%m") # Faut d'abord changer Apr en 04
-  musique$mode <- as.factor(musique$mode)
-  musique$key <- as.factor(musique$key)
-  musique$instrumentalness <- as.numeric(musique$instrumentalness)
-  musique$acousticness <- as.numeric(musique$acousticness)
-  musique$tempo <- as.numeric(musique$tempo)
-  
-  # On prend les lignes sans NA
-  musique <- musique[stats::complete.cases(musique),]
   
   output$allthatjazz <- renderText({"All that Jazz"})
   

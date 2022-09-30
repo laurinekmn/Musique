@@ -7,12 +7,6 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
-library(colourpicker)
-library(rAmCharts)
-library(bslib)
-
-musique <- read.csv("../musique.csv", sep=";")
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(

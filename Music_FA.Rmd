@@ -10,46 +10,72 @@ output: html_document
 library(data.table)
 music <- fread("musique.csv", sep=";", dec=".")
 
-dim(music)
-head(music)
-summary(music)
-
-music[,list("artist_name","track_name", "instance_id", "key", "mode", "obtained_date", "music_genre"):=lapply(.SD, as.factor),.SDcols=c("artist_name","track_name", "instance_id", "key", "mode", "obtained_date", "music_genre")]
-
-
-music$tempo=as.numeric(music$tempo)
+#as.factor
 music$artist_name = as.factor(music$artist_name)
 music$track_name = as.factor(music$track_name)
 music$instance_id = as.factor(music$instance_id)
-music$key = as.factor(music$key)
 music$mode = as.factor(music$mode)
 music$obtained_date = as.factor(music$obtained_date)
 music$music_genre = as.factor(music$music_genre)
+music$key = as.factor(music$key)
+
+#as.numeric
 music$acousticness = as.numeric(music$acousticness)
 music$instrumentalness = as.numeric(music$instrumentalness)
+music$tempo=as.numeric(music$tempo)
 
-```
-### Nettoyage du jeu de données
-```{r}
-music <- na.omit(music)
-music <- music[which(music$duration_ms>0)]
-dim(music)
+## CLEANING 
+
+music <- na.omit(music) # drop rows with NAs
+music <- music[which(music$duration_ms>0)] # keep rows with positive durations_ms
+music <- music[which(artist_name!="empty_field")] # remove rows 
+music <- droplevels(music) # droplevels 
 
 
 # vérif que l'id est bien unique
 music[,list(nbr =.N),by=instance_id][which(nbr>1)]
 
+# remove duplicated lines with different popularity grades 
+# we choose to keep the highest popularity grade
+
+library(dplyr)
+options(dplyr.summarise.inform = FALSE)
+music <- music %>% dplyr::group_by(artist_name,track_name) %>%
+  dplyr::summarise(instance_id = instance_id[which.max(popularity)],popularity = max(popularity)) %>% 
+  dplyr::inner_join(music, music2, by = "instance_id", copy=FALSE, suffix = c("","."))
+
+
+music <- as.data.frame(music)
+musique <- music[,-(5:7)]
+summary(musique)
+```
+
+### Nettoyage du jeu de données
+```{r}
+
+summary(musi)
+
+# instance_id = which.max(popularity),
+
 # musiques en double ? 
 music[,list(nbr =.N), by=list(artist_name, track_name)][which(nbr>1)]
-anyDuplicated(music[,-popularity])
+anyDuplicated(musique)
 
 music2 <- music[,list(new_id = instance_id,popularity_mean = mean(popularity)),by=list(artist_name,track_name) ]
 music2[,new_id]
 music2[,list(nbr =.N, new_id, popularity_mean), by=list(artist_name, track_name)][which(nbr>1)]
 
+music2[which(music2$artist_name.1!=music2$artist_name.2)]
+
 ```
 il semble que des combinaisons (artist_name, track_name) soit en double ou en triple. dû au fait qu'un titre sort parfois en single et en album.s
 on choisit donc pour ces titres de ne garder qu'une ligne où la popularité est la moyenne des popularités pour cette chanson 
+
+
+```{r}
+summary(music)
+```
+
 
 
 ### AFDM
@@ -60,5 +86,7 @@ library(Factoshiny)
 res.FAMD <- FAMD(data.frame(music2), 
                  sup.var = c("danceability", "energy", "popularity", "valence")
                  )
+
+summary(music$key)
 ```
 

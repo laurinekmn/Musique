@@ -345,12 +345,21 @@ shinyUI(fluidPage(
                                                      conditionalPanel(
                                                        "input.model_utilise =='Best model variables'",
                                                        
+                                                       sliderInput(
+                                                         "Nb_vars",
+                                                         label = ("Number step in stepAIC"),
+                                                         min = 1,
+                                                         max = 30,
+                                                         value = 1
+                                                       )
                                                      )
                                                     
                                                    ),
                                                    submitButton("Update View", icon("refresh")),
                                                    verbatimTextOutput("prediction"),
-                                                   verbatimTextOutput("test")
+                                                   verbatimTextOutput("test"),
+                                                   
+                                                   #verbatimTextOutput("predi")
                                                    #DT::dataTableOutput("data_pred")
                                                    #DT::dataTableOutput("test")
                                                    

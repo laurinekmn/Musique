@@ -170,9 +170,35 @@ shinyUI(fluidPage(
                       )
              ),
              
-             # 4e onglet : ACP / Classification
-             tabPanel("PCA & clustering",
+             # 4e onglet : Song Recommendations 
+             tabPanel("FAMD & Song Recommendations",
                       fluidRow(
+                        column(width = 3, 
+                               wellPanel(
+                                 titlePanel("FAMD settings"), 
+                                 # colorer par music genre, key ou mode 
+                                 
+                               )
+                               
+                        ), 
+                        column(width = 9, 
+                               navbarPage("FAMD", 
+                                          tabPanel("Graphs"
+                                                   
+                                                   
+                                          ), 
+                                          tabPanel("Eigenvalues"
+                                                   
+                                                   
+                                          ), 
+                                          tabPanel("Features"
+                                                   
+                                          ),
+                                          tabPanel("Infos"
+                                                   
+                                          )
+                               )
+                        )
                         
                         
                       )

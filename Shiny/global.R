@@ -7,7 +7,7 @@
 library(bslib)
 library(colourpicker)
 library(data.table)
-library(dt)
+library(DT)
 library(dplyr)
 library(rAmCharts)
 library(shiny)

@@ -40,26 +40,23 @@ shinyServer(function(input, output) {
   
   # FAMD & Recommendations
  
+  # Subset: 10% of each music_genre 
+  subset <- musique %>% 
+    group_by(music_genre) %>%
+    sample_frac(size = 0.10, replace = FALSE)
   
+  #FAMD on subset
+  res.FAMD <- FAMD(subset[,-c(1:3,16)], 
+                   ncp = 4, 
+                   graph = FALSE, 
+                   sup.var = c("danceability", "energy", "popularity", "valence", "music_genre")
+  )
   
   output$FAMD1 <- renderPlot({
-    
-    # Subset: 10% of each music_genre 
-    subset <- musique %>% 
-      group_by(music_genre) %>%
-      sample_frac(size = 0.10, replace = FALSE)
-    
-    #FAMD on subset
-    res.FAMD <- FAMD(subset[,-c(1:3,16)], 
-                     ncp = 4, 
-                     graph = FALSE, 
-                     sup.var = c("danceability", "energy", "popularity", "valence", "music_genre")
-    )
-    
     plot.FAMD(res.FAMD,invisible=c('quali','quali.sup','ind.sup'),
               select = 'all' ,
               habillage=7,
-              title="Graphe des individus et des modalités",
+              title= input$FAMD1_title,
               cex=0.85,cex.main=0.85,cex.axis=0.85)
     
     

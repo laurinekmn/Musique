@@ -176,6 +176,10 @@ shinyUI(fluidPage(
                         column(width = 3, 
                                wellPanel(
                                  titlePanel("FAMD settings"), 
+                                 print("First graph"),
+                                 textInput(inputId = "FAMD1_title", label = "Graph title", value = "Map of the individuals (FAMD)") 
+                                 
+                                 
                                  # colorer par music genre, key ou mode 
                                  
                                )

@@ -177,10 +177,16 @@ shinyUI(fluidPage(
                                wellPanel(
                                  titlePanel("FAMD settings"), 
                                  print("First graph"),
-                                 textInput(inputId = "FAMD1_title", label = "Graph title", value = "Map of the individuals (FAMD)") 
+                                 textInput(inputId = "FAMD1_title", label = "Graph title", value = "Map of the individuals (FAMD)"), 
+                                 radioButtons(inputId = "colorFAMD1", label = "Color by", choices = c("music_genre", "key", "mode")),
+                                 print("2nd graph"),
+                                 textInput(inputId = "FAMD2_title", label = "Graph title", value = "Features contribution"), 
+                                 print("3rd graph"),
+                                 textInput(inputId = "FAMD3_title", label = "Graph title", value = "Correlation circle"), 
                                  
                                  
-                                 # colorer par music genre, key ou mode 
+                                 # régler radio buttons dans le server 
+                                 # ajout fonction export des images 
                                  
                                )
                                

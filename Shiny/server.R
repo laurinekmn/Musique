@@ -52,6 +52,8 @@ shinyServer(function(input, output) {
                    sup.var = c("danceability", "energy", "popularity", "valence", "music_genre")
   )
   
+  # colFAMD1 <- match(colnames(subset[,-c(1:3,16)]), input$colorFAMD1)
+  
   output$FAMD1 <- renderPlot({
     plot.FAMD(res.FAMD,invisible=c('quali','quali.sup','ind.sup'),
               select = 'all' ,
@@ -64,12 +66,12 @@ shinyServer(function(input, output) {
   
   output$FAMD2 <- renderPlot(
     {# Features graph 
-      plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title="Graphe des variables")
+      plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title=input$FAMD2_title)
     })
   
   output$FAMD3 <- renderPlot({
     # Correlation circle 
-    plot.FAMD(res.FAMD, choix='quanti',title="Cercle des corrélations")
+    plot.FAMD(res.FAMD, choix='quanti',title=input$FAMD3_title)
   })
   
   

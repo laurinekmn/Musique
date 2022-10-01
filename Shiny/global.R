@@ -9,6 +9,7 @@ library(colourpicker)
 library(data.table)
 library(DT)
 library(dplyr)
+library(FactoMineR)
 library(rAmCharts)
 library(shiny)
 

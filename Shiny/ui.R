@@ -183,7 +183,18 @@ shinyUI(fluidPage(
                         ), 
                         column(width = 9, 
                                navbarPage("FAMD", 
-                                          tabPanel("Graphs"
+                                          tabPanel("Graphs", 
+                                                   plotOutput(outputId = "FAMD1"),
+                                                   br(),
+                                                   br(),
+                                                   fluidRow(
+                                                     column(width = 6, 
+                                                            plotOutput(outputId = "FAMD2") 
+                                                            
+                                                     ),
+                                                     column(width = 6, 
+                                                            plotOutput(outputId = "FAMD3")
+                                                     ))
                                                    
                                                    
                                           ), 

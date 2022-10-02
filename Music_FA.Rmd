@@ -140,3 +140,12 @@ plot.FAMD(res.FAMD, choix='quanti',title="Cercle des corrélations")
 
 ```
 
+
+
+
+```{r}
+class(match("key", colnames(subset[,-c(1:3,16)])))
+
+
+```
+

@@ -76,34 +76,39 @@ shinyUI(fluidPage(
                                )
                         ),
                         column(width = 8,
-                               textOutput('VisuTitle1'),
-                               tags$head(tags$style("#VisuTitle1{color : 1d3624;
-                                                    font-size: 30px;
+                               textOutput('DataTitle1'),
+                               tags$head(tags$style("#DataTitle1{color : 1d3624;
+                                                    font-size: 28px;
                                                     font-family: Georgia,serif;
                                                     font-style: bold;
                                                     }"
                                )
                                ),
                                br(),
-                               textOutput('VisuPara1'),
-                               tags$head(tags$style("#VisuPara1{color : black;
-                                                    font-size: 18px;
+                               textOutput('DataPara1'),
+                               tags$head(tags$style("#DataPara1{color : black;
+                                                    font-size: 16px;
                                                     font-family: Arial,sans-serif;
                                                     font-style: normal;
                                                     }"
                                )
                                ),
                                br(),
-                               textOutput('VisuTitle2'),
-                               tags$head(tags$style("#VisuTitle2{color : 1d3624;
-                                                    font-size: 30px;
+                               textOutput('DataTitle2'),
+                               tags$head(tags$style("#DataTitle2{color : 1d3624;
+                                                    font-size: 28px;
                                                     font-family: Georgia,serif;
                                                     font-style: bold;
                                                     }"
-                                                    )
+                               )
                                ), 
                                br(),
-                               textOutput('VisuPara2'),
+                               textOutput('DataPara2'),
+                               tags$head(tags$style("#DataPara2{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")),
                                tags$ul(
                                  tags$li("Rows with NAs were removed",
                                          # tags$style("{color: black;
@@ -113,18 +118,31 @@ shinyUI(fluidPage(
                                          #            }"
                                          #   
                                          # )
-                                         ),
+                                 ),
                                  tags$li("Mode, key, danceability, energy, popularity and valence were converted as factor"),
-                                 tags$li("Other features were considered as numeric")
+                                 tags$li("Other features were considered as numeric"), 
+                              
                                  
                                ),
-                               tags$head(tags$style("#VisuPara2{color : black;
-                                                    font-size: 18px;
+                               textOutput('DataPara2_2'),
+                               tags$head(tags$style("#DataPara2_2{color : black;
+                                                    font-size: 16px;
                                                     font-family: Arial,sans-serif;
                                                     font-style: normal;
                                                     }"
                                )
+                               ), 
+                               br(),
+                               textOutput('DataTitle3'),
+                               tags$head(tags$style("#DataTitle3{color : 1d3624;
+                                                    font-size: 28px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
                                )
+                               ),
+                               
+                               dataTableOutput("features_info")
                         ), 
                         column(width = 1)
                       )
@@ -152,7 +170,13 @@ shinyUI(fluidPage(
                                  textInput(inputId = "titre", label = "Main title:", value = "Histogram"),
                                  
                                  # selection de la colonne
-                                 radioButtons(inputId = "var", label = "Feature: ", choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)])
+                                 radioButtons(inputId = "var", label = "Feature: ", choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)]), 
+                                 
+                                 # refresh button 
+                                 actionButton("updatevisu", "Update !", class = "btn-success")
+                                 
+                                 
+                                 
                                )
                         ), 
                         # deuxieme colonne
@@ -195,7 +219,6 @@ shinyUI(fluidPage(
                                navbarPage("FAMD", 
                                           tabPanel("Graphs", 
                                                    plotOutput(outputId = "FAMD1"),
-                                                   br(),
                                                    br(),
                                                    fluidRow(
                                                      column(width = 6, 

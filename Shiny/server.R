@@ -18,10 +18,16 @@ shinyServer(function(input, output) {
   output$HomeTitle2 <- renderText({"All that Jazz"})
 
   # Data description text outputs
-  output$VisuTitle1 <- renderText({paste("General structure of the dataset")})
-  output$VisuPara1 <- renderText({paste("This dataset has xx lines and yy columns. Each line corresponds to a song identified by an unique id and described by features. The features are described below.")})
-  output$VisuTitle2 <- renderText({paste("Data pre-processing")})
-  output$VisuPara2 <- renderText({paste("Before the start of the analysis, the dataset has been preprocessed.")})
+  output$DataTitle1 <- renderText({paste("General structure of the dataset")})
+  output$DataPara1 <- renderText({paste("The raw dataset has", dim0[1], "rows and ",dim0[2]," columns. Each row corresponds to a song identified by an unique id and described by features. The features are described in the table below.")})
+  output$DataTitle2 <- renderText({paste("Data pre-processing")})
+  output$DataPara2 <- renderText({paste("Before the start of the analysis, the dataset has been preprocessed.")})
+  output$DataPara2_2 <- renderText({paste("The resulting dataset has", dim1[1], "rows and", dim1[2], "columns.")})
+  output$DataTitle3 <- renderText({paste("Features description")})
+  
+  
+  output$features_info <- renderDataTable({tabfeat})
+  
   
   # Visualisation 
   output$distPlot <- renderAmCharts({
@@ -52,9 +58,10 @@ shinyServer(function(input, output) {
                    sup.var = c("danceability", "energy", "popularity", "valence", "music_genre")
   )
   
-  # colFAMD1 <- match(colnames(subset[,-c(1:3,16)]), input$colorFAMD1)
+  # colFAMD1 <- match(input$colorFAMD1, colnames(subset[,-c(1:3,16)]))
   
   output$FAMD1 <- renderPlot({
+    input$updatevisu
     plot.FAMD(res.FAMD,invisible=c('quali','quali.sup','ind.sup'),
               select = 'all' ,
               habillage=7,
@@ -66,11 +73,13 @@ shinyServer(function(input, output) {
   
   output$FAMD2 <- renderPlot(
     {# Features graph 
+      input$updatevisu
       plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title=input$FAMD2_title)
     })
   
   output$FAMD3 <- renderPlot({
-    # Correlation circle 
+    # Correlation circle
+    input$updatevisu
     plot.FAMD(res.FAMD, choix='quanti',title=input$FAMD3_title)
   })
   

@@ -19,6 +19,8 @@ library(shiny)
 
 music <- fread("Data/musique.csv", sep=";", dec=".")
 
+dim0 <- dim(music)
+
 ## FEATURES CLASS
 
 #as.factor
@@ -53,6 +55,14 @@ music <- music %>% dplyr::group_by(artist_name,track_name) %>%
 
 music <- as.data.frame(music)
 musique <- music[,-(5:7)]
+
+dim1 <- dim(musique)
+
+
+## CSV file with info about dataset features
+
+tabfeat <- fread("Data/features_info.csv", sep=";")
+
 
 ######################################
 # Functions

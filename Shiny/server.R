@@ -83,6 +83,14 @@ shinyServer(function(input, output) {
     plot.FAMD(res.FAMD, choix='quanti',title=input$FAMD3_title)
   })
   
+  # eigen values 
+  output$eig <- renderPrint(res.FAMD$eig)
   
+  # features info 
+  output$var <- renderPrint(res.FAMD$var)
+  # 
+  # # info 
+  # 
+  # txt <- read.table("Data/testdoc.txt")
 
 })

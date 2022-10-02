@@ -231,11 +231,13 @@ shinyUI(fluidPage(
                                                    
                                                    
                                           ), 
-                                          tabPanel("Eigenvalues"
+                                          tabPanel("Eigenvalues", 
+                                                   verbatimTextOutput(outputId = "eig")
                                                    
                                                    
                                           ), 
-                                          tabPanel("Features"
+                                          tabPanel("Features", 
+                                                   verbatimTextOutput(outputId = "var")
                                                    
                                           ),
                                           tabPanel("Infos"

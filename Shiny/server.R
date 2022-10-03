@@ -17,7 +17,7 @@ shinyServer(function(input, output) {
   # Home text outputs
   output$HomeTitle1 <- renderText({"WELCOME TO"})
   output$HomeTitle2 <- renderText({"All that Jazz"})
-
+  
   # Data description text outputs
   output$DataTitle1 <- renderText({paste("General structure of the dataset")})
   output$DataPara1 <- renderText({paste("The raw dataset has", dim0[1], "rows and ",dim0[2]," columns. Each row corresponds to a song identified by an unique id and described by features. The features are described in the table below.")})
@@ -29,12 +29,12 @@ shinyServer(function(input, output) {
   
   output$features_info <- renderDataTable({tabfeat})
   
-
+  
   # Visualisation 
-
+  
   best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
-    
-
+  
+  
   output$distPlot <- renderAmCharts({
     
     # generate bins based on input$bins from ui.R
@@ -48,9 +48,9 @@ shinyServer(function(input, output) {
            export = TRUE, zoom = TRUE)
   })
   
-
+  
   # FAMD & Recommendations
- 
+  
   # Subset: 10% of each music_genre 
   subset <- musique %>% 
     group_by(music_genre) %>%
@@ -72,151 +72,154 @@ shinyServer(function(input, output) {
               habillage=7,
               title= input$FAMD1_title,
               cex=0.85,cex.main=0.85,cex.axis=0.85)
-
-  # Split train test
-  
-  musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
-  musique_test <- reactive(subset({dplyr::anti_join(musique, musique_train())}))
-  train <-reactive({subset({musique_train()[, c("popularity", input$vars_quali, input$vars_quanti)]})})
-
-  
-  # Linear model
-  
-  model <- eventReactive(input$goButton,{
     
-    lm(popularity~.^2, data = train())
+    # Split train test
     
-  })
-  
-  # Linear Regression output
-  output$summary_model <- renderPrint({
-    input$goButton
-    summary(model())
-  })
-  
-  # RMSE
-  output$rmse <- renderPrint({
-    input$goButton
-    paste("RMSE =",MLmetrics::RMSE(predict(model()), musique_test()$popularity)) # ajouter au shiny
-  })
-  
-  # Datatable
-  output$DataTable <- DT::renderDataTable({
-    input$goButton
+    musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
+    musique_test <- reactive(subset({dplyr::anti_join(musique, musique_train())}))
+    train <-reactive({subset({musique_train()[, c("popularity", input$vars_quali, input$vars_quanti)]})})
     
-    DT::datatable(musique_test() %>% mutate(predicted = round(predict(model(), newdata = musique_test())), residuals = (popularity - predicted)) %>% select(popularity, predicted, residuals), 
-                  rownames = FALSE, colnames = c('actual popularity', 'predicted popularity', 'residuals'), 
-                  extensions = c('Buttons', 'Responsive'), 
-                  options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrtp', 
-                                 buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, 
-                                 lengthMenu = c(20, 100, 1000, nrow(musique)), 
-                                 #scrollY = 300, 
-                                 scrollCollapse = TRUE
-                  )) %>% DT::formatStyle(
-                    'residuals',
-                    backgroundColor = styleInterval(c(-20, -10, 10, 20), c("red","orange", 'green', 'orange', "red"))
-                    
-                  )
     
-  })
-  
-  # Plotly Scatterplot: predicted vs actual popularity
-  output$graph <- renderPlotly({
-    input$goButton
+    # Linear model
     
-    plot_ly(data = musique_test(), y = ~predict(model(), newdata = musique_test()), x = ~popularity,
-            type = "scatter", mode = "markers",
-            marker = list(size = 5,
-                          color = '#FFFFFF',
-                          line = list(color = '#EA6345', 
-                                      width = 2))) %>% 
+    model <- eventReactive(input$goButton,{
       
-      layout(title = '',
-             yaxis = list(zeroline = FALSE, title = "predicted popularity"),
-             xaxis = list(zeroline = FALSE, title = "actual popularity"))
-    
-    
-  })
-  
-  # Plotly Histogram of residuals
-  output$graph_residual <- renderPlotly({
-    input$goButton
-    
-    
-    plot_ly(musique_test(), x = ~round(residuals(model()),2), type = "histogram", marker = list(color = "#EA6345",
-                                                                                                line = list(color = "#FFFFFF", width = 1))) %>%   layout(title = '',
-                                                                                                                                                         yaxis = list(zeroline = FALSE, title = "frequency"),
-                                                                                                                                                         xaxis = list(zeroline = FALSE, title = "residual",  titlefont = list(
-                                                                                                                                                           family = "Lucida Console, Courier New, monospace", size = 12, color = "#FFFFFF"), 
-                                                                                                                                                           tickfont = list(
-                                                                                                                                                             family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white")) 
-    
-    
-
-    
-    
-  })
-  
-
-  output$FAMD2 <- renderPlot(
-    {# Features graph 
-      input$updatevisu
-      plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title=input$FAMD2_title)
+      lm(popularity~.^2, data = train())
+      
     })
-  
-  output$FAMD3 <- renderPlot({
-    # Correlation circle
-    input$updatevisu
-    plot.FAMD(res.FAMD, choix='quanti',title=input$FAMD3_title)
+    
+    # Linear Regression output
+    output$summary_model <- renderPrint({
+      input$goButton
+      summary(model())
+    })
+    
+    # RMSE
+    output$rmse <- renderPrint({
+      input$goButton
+      paste("RMSE =",MLmetrics::RMSE(predict(model()), musique_test()$popularity)) # ajouter au shiny
+    })
+    
+    # Datatable
+    output$DataTable <- DT::renderDataTable({
+      input$goButton
+      
+      DT::datatable(musique_test() %>% mutate(predicted = round(predict(model(), newdata = musique_test())), residuals = (popularity - predicted)) %>% select(popularity, predicted, residuals), 
+                    rownames = FALSE, colnames = c('actual popularity', 'predicted popularity', 'residuals'), 
+                    extensions = c('Buttons', 'Responsive'), 
+                    options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrtp', 
+                                   buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, 
+                                   lengthMenu = c(20, 100, 1000, nrow(musique)), 
+                                   #scrollY = 300, 
+                                   scrollCollapse = TRUE
+                    )) %>% DT::formatStyle(
+                      'residuals',
+                      backgroundColor = styleInterval(c(-20, -10, 10, 20), c("red","orange", 'green', 'orange', "red"))
+                      
+                    )
+      
+    })
+    
+    # Plotly Scatterplot: predicted vs actual popularity
+    output$graph <- renderPlotly({
+      input$goButton
+      
+      plot_ly(data = musique_test(), y = ~predict(model(), newdata = musique_test()), x = ~popularity,
+              type = "scatter", mode = "markers",
+              marker = list(size = 5,
+                            color = '#FFFFFF',
+                            line = list(color = '#EA6345', 
+                                        width = 2))) %>% 
+        
+        layout(title = '',
+               yaxis = list(zeroline = FALSE, title = "predicted popularity"),
+               xaxis = list(zeroline = FALSE, title = "actual popularity"))
+      
+      
+    })
+    
+    # Plotly Histogram of residuals
+    output$graph_residual <- renderPlotly({
+      input$goButton
+      
+      
+      plot_ly(musique_test(), x = ~round(residuals(model()),2), type = "histogram", marker = list(color = "#EA6345",
+                                                                                                  line = list(color = "#FFFFFF", width = 1))) %>%   layout(title = '',
+                                                                                                                                                           yaxis = list(zeroline = FALSE, title = "frequency"),
+                                                                                                                                                           xaxis = list(zeroline = FALSE, title = "residual",  titlefont = list(
+                                                                                                                                                             family = "Lucida Console, Courier New, monospace", size = 12, color = "#FFFFFF"), 
+                                                                                                                                                             tickfont = list(
+                                                                                                                                                               family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white")) 
+      
+      
+      
+      
+      
+    })
+    
+    
+    output$FAMD2 <- renderPlot(
+      {# Features graph 
+        input$updatevisu
+        plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title=input$FAMD2_title)
+      })
+    
+    output$FAMD3 <- renderPlot({
+      # Correlation circle
+      input$updatevisu
+      plot.FAMD(res.FAMD, choix='quanti',title=input$FAMD3_title)
+    })
+    
+    # eigen values 
+    output$eig <- renderPrint(res.FAMD$eig)
+    
+    # features info 
+    output$var <- renderPrint(res.FAMD$var)
+    # 
+    # # info 
+    # 
+    # txt <- read.table("Data/testdoc.txt")
+    
+    
+    observeEvent(input$model_utilise, {
+      shinyjs::refresh()
+    })
+    
+    # Données de prédiction entrées par l'utilisateur
+    data_pred <- reactive({data.frame(acousticness = input$Ac, danceability = input$Dan,
+                                      duration_ms = input$Dur, energy = input$En,
+                                      instrumentalness = input$Ins, key = input$Key,
+                                      liveness = input$Live, loudness = input$Lou,
+                                      mode = input$mode, speechiness = input$Spee,
+                                      tempo = input$Tempo, valence = input$Val,
+                                      music_genre = input$Genre)})
+    
+    
+    
+    #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
+    
+    output$prediction <- renderPrint({paste("Prediction :",predict(model(), newdata = data_pred()))})
+    
+    
+    # # Meilleur model
+    # 
+    # 
+    # # Données de prédiction entrées par l'utilisateur
+    data_prediction <- reactive({data.frame(acousticness = input$Ac2, danceability = input$Dan2,
+                                            duration_ms = input$Dur2, energy = input$En2,
+                                            instrumentalness = input$Ins2, key = input$Key2,
+                                            liveness = input$Live2, loudness = input$Lou2,
+                                            mode = input$mode2, speechiness = input$Spee2,
+                                            tempo = input$Tempo2, valence = input$Val2,
+                                            music_genre = input$Genre2)})
+    
+    #output$test <- renderPrint({data_prediction()})
+    output$predi <- renderPrint({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
+    
+    
+    
+    
   })
-  
-  # eigen values 
-  output$eig <- renderPrint(res.FAMD$eig)
-  
-  # features info 
-  output$var <- renderPrint(res.FAMD$var)
-  # 
-  # # info 
-  # 
-  # txt <- read.table("Data/testdoc.txt")
-
-  
-  observeEvent(input$model_utilise, {
-    shinyjs::refresh()
-  })
-  
-  # Données de prédiction entrées par l'utilisateur
-  data_pred <- reactive({data.frame(acousticness = input$Ac, danceability = input$Dan,
-                                    duration_ms = input$Dur, energy = input$En,
-                                    instrumentalness = input$Ins, key = input$Key,
-                                    liveness = input$Live, loudness = input$Lou,
-                                    mode = input$mode, speechiness = input$Spee,
-                                    tempo = input$Tempo, valence = input$Val,
-                                    music_genre = input$Genre)})
-  
-  
-  
-  #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
-  
-  output$prediction <- renderPrint({paste("Prediction :",predict(model(), newdata = data_pred()))})
-  
-  
-  # # Meilleur model
-  # 
-  # 
-  # # Données de prédiction entrées par l'utilisateur
-  data_prediction <- reactive({data.frame(acousticness = input$Ac2, danceability = input$Dan2,
-                                          duration_ms = input$Dur2, energy = input$En2,
-                                          instrumentalness = input$Ins2, key = input$Key2,
-                                          liveness = input$Live2, loudness = input$Lou2,
-                                          mode = input$mode2, speechiness = input$Spee2,
-                                          tempo = input$Tempo2, valence = input$Val2,
-                                          music_genre = input$Genre2)})
-  
-  #output$test <- renderPrint({data_prediction()})
-  output$predi <- renderPrint({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
-
-
-  
   
 })
+  

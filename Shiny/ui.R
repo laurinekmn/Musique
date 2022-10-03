@@ -639,7 +639,7 @@ shinyUI(fluidPage(
                                                    #DT::dataTableOutput("data_pred")
                                                    #DT::dataTableOutput("test")
                                                    
-                                                   ),
+                                                   )
                                           
                                           
                                                   
@@ -647,7 +647,7 @@ shinyUI(fluidPage(
                                
                                )
 
-                        ),
+                        )
                         
 
                       )
@@ -664,6 +664,6 @@ shinyUI(fluidPage(
 
 
   )
-))
+)
 
 

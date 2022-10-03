@@ -10,6 +10,7 @@ library(data.table)
 library(DT)
 library(dplyr)
 library(FactoMineR)
+library(plotly)
 library(rAmCharts)
 library(shiny)
 

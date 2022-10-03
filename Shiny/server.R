@@ -110,7 +110,7 @@ shinyServer(function(input, output) {
     input$updatevisu
     plot.FAMD(res.FAMD,invisible=c('quali','quali.sup','ind.sup'),
               select = 'all' ,
-              habillage=7,
+              habillage=input$colorFAMD1,
               title= input$FAMD1_title,
               cex=0.85,cex.main=0.85,cex.axis=0.85)
     

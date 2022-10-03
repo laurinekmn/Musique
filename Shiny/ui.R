@@ -220,7 +220,7 @@ shinyUI(fluidPage(
                                                     font-family: Arial,sans-serif;
                                                     font-style: normal;
                                                     }"
-                               ))
+                               )),
 
                                  # selection de la colonne
                                  radioButtons(inputId = "var", label = "Feature: ", choices = colnames(musique)[c(4:9, 11:12, 14:15, 17)]), 

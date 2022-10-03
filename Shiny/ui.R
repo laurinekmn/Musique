@@ -246,7 +246,9 @@ shinyUI(fluidPage(
                                                                                                                             "topright")),
                                             # size of the legend
                                             sliderInput("legend_size", "Legend's size:", min = 0.6, max = 1.5, value = 0.8),
-                                          )
+                                          ),
+                                          
+                                          actionButton("goButton2", "Update view", class = "btn-success", icon("refresh"))
                                    ), 
                                    # deuxieme colonne
                                    column(width = 9, 

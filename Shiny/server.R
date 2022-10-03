@@ -54,12 +54,15 @@ shinyServer(function(input, output) {
               export = TRUE, zoom = TRUE)
   })
   
+  
   # Scatterplot
+  #musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
+  
   output$scatterplot <- renderPlot({
-    
+    #input$goButton2
     set.seed(1234)
     musique_sample <- musique[sample(1:nrow(musique),input$sampleSize),]
-    
+    #musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
     plot(musique_sample[, input$var_scat_x], musique_sample[, input$var_scat_y], 
          col = musique_sample$music_genre,
          xlab = paste(input$var_scat_x), ylab=paste(input$var_scat_y),
@@ -112,7 +115,8 @@ shinyServer(function(input, output) {
               cex=0.85,cex.main=0.85,cex.axis=0.85)
     
     
-    
+  })
+  
     # Split train test
     
     musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
@@ -261,4 +265,4 @@ shinyServer(function(input, output) {
     
   })
   
-})
+#})

@@ -306,6 +306,7 @@ shinyUI(fluidPage(
                                  textInput(inputId = "FAMD2_title", label = "Graph title", value = "Features contribution"), 
                                  print("3rd graph"),
                                  textInput(inputId = "FAMD3_title", label = "Graph title", value = "Correlation circle"), 
+                                 actionButton("goButton3", "Update view", class = "btn-success", icon("refresh"))
                                  
                                  
                                  # régler radio buttons dans le server 

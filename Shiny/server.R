@@ -56,16 +56,18 @@ shinyServer(function(input, output) {
   
   
   # Scatterplot
-  #musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
+  musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
+  var_scat_x <- eventReactive(input$goButton2, {input$var_scat_x})
+  var_scat_y <- eventReactive(input$goButton2, {input$var_scat_y})
   
   output$scatterplot <- renderPlot({
     #input$goButton2
     set.seed(1234)
-    musique_sample <- musique[sample(1:nrow(musique),input$sampleSize),]
+    musique_sample <- musique_sample()
     #musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
-    plot(musique_sample[, input$var_scat_x], musique_sample[, input$var_scat_y], 
+    plot(musique_sample[, var_scat_x()], musique_sample[, var_scat_y()], 
          col = musique_sample$music_genre,
-         xlab = paste(input$var_scat_x), ylab=paste(input$var_scat_y),
+         xlab = paste(var_scat_x()), ylab=paste(var_scat_y()),
          pch=19, main = input$titre_scat)
     legend(input$legend_pos,levels(musique_sample$music_genre),
            col = musique_sample$music_genre, pch=19, cex=input$legend_size,bty="n")
@@ -106,11 +108,13 @@ shinyServer(function(input, output) {
   
   # colFAMD1 <- match(input$colorFAMD1, colnames(subset[,-c(1:3,16)]))
   
+  color <- eventReactive(input$goButton3, {input$colorFAMD1})
   output$FAMD1 <- renderPlot({
-    input$updatevisu
+    input$goButton3
+    #input$updatevisu
     plot.FAMD(res.FAMD,invisible=c('quali','quali.sup','ind.sup'),
               select = 'all' ,
-              habillage=input$colorFAMD1,
+              habillage=color(),
               title= input$FAMD1_title,
               cex=0.85,cex.main=0.85,cex.axis=0.85)
     

@@ -7,12 +7,12 @@
 #    http://shiny.rstudio.com/
 #
 
+library(plotly)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
   output$allthatjazz <- renderText({"All that Jazz"})
-
   
   # Home text outputs
   output$HomeTitle1 <- renderText({"WELCOME TO"})
@@ -28,17 +28,6 @@ shinyServer(function(input, output) {
   
   
   output$features_info <- renderDataTable({tabfeat})
-  
-  
-  # Visualisation 
-  
-  best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
-
-  # Data description text outputs
-  output$VisuTitle1 <- renderText({paste("General structure of the dataset")})
-  output$VisuPara1 <- renderText({paste("This dataset has xx lines and yy columns. Each line corresponds to a song identified by an unique id and described by features. The features are described below.")})
-  output$VisuTitle2 <- renderText({paste("Data pre-processing")})
-  output$VisuPara2 <- renderText({paste("Before the start of the analysis, the dataset has been preprocessed.")})
   
   # Visualisation 
   # Histogram
@@ -56,7 +45,6 @@ shinyServer(function(input, output) {
            export = TRUE, zoom = TRUE)
   })
   
-
   # Boxplot
   output$boxplot <- renderAmCharts({
     
@@ -94,7 +82,10 @@ shinyServer(function(input, output) {
       theme_bw() + 
       labs(x = "Music genre",y = "Prevalence") +
       ggtitle(input$titre_bar)
-
+    
+  })
+  
+  
   
   # FAMD & Recommendations
   
@@ -119,6 +110,8 @@ shinyServer(function(input, output) {
               habillage=7,
               title= input$FAMD1_title,
               cex=0.85,cex.main=0.85,cex.axis=0.85)
+    
+    
     
     # Split train test
     
@@ -264,11 +257,8 @@ shinyServer(function(input, output) {
     output$predi <- renderPrint({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
     
     
-
+    
     
   })
   
 })
-
-})
-  

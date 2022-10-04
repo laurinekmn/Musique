@@ -405,7 +405,7 @@ shinyUI(fluidPage(
                                           ),
                                           
                                           tabPanel("Graph",
-                                                   verbatimTextOutput("rmse"),
+                                                   textOutput("rmse"),
                                                    plotlyOutput("graph")
                                           ),
                                           
@@ -418,6 +418,8 @@ shinyUI(fluidPage(
                                           ),
                                           
                                           tabPanel("Your prediction",
+                                                   
+                                                   textOutput("exp_pred"),
                                                    
                                                    selectInput(
                                                      inputId = "model_utilise",
@@ -594,7 +596,7 @@ shinyUI(fluidPage(
                                                          )
                                                        ),
                                                        
-                                                       verbatimTextOutput("prediction")
+                                                       textOutput("prediction")
                                                        
                                                      ),
                                                      
@@ -723,7 +725,7 @@ shinyUI(fluidPage(
                                                        ),
                                                        
                                                        #verbatimTextOutput("test"),
-                                                       verbatimTextOutput("predi")
+                                                       textOutput("predi")
                                                        
                                                        
                                                      )

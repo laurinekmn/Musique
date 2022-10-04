@@ -143,7 +143,7 @@ shinyServer(function(input, output) {
     })
     
     # RMSE
-    output$rmse <- renderPrint({
+    output$rmse <- renderText({
       input$goButton
       paste("RMSE =",MLmetrics::RMSE(predict(model()), musique_test()$popularity)) # ajouter au shiny
     })
@@ -243,10 +243,10 @@ shinyServer(function(input, output) {
                                       music_genre = input$Genre)})
     
     
-    
+    best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
     #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
     
-    output$prediction <- renderPrint({paste("Prediction :",predict(model(), newdata = data_pred()))})
+    output$prediction <- renderText({paste("Prediction :",predict(model(), newdata = data_pred()))})
     
     
     # # Meilleur model
@@ -262,10 +262,11 @@ shinyServer(function(input, output) {
                                             music_genre = input$Genre2)})
     
     #output$test <- renderPrint({data_prediction()})
-    output$predi <- renderPrint({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
+    output$predi <- renderText({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
     
     
-    
+    output$exp_pred <- renderText({"You have an idea for a new song ? Let's try to predict the popularity of your future song !
+      You can choose to predict it thanks to the variables you have selected or the variables of the best model (à définir)"})
     
   })
   

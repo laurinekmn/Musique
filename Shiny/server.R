@@ -264,9 +264,20 @@ shinyServer(function(input, output) {
     #output$test <- renderPrint({data_prediction()})
     output$predi <- renderText({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
     
+    # Explication des onglets
     
     output$exp_pred <- renderText({"You have an idea for a new song ? Let's try to predict the popularity of your future song !
       You can choose to predict it thanks to the variables you have selected or the variables of the best model (à définir)"})
+    
+    output$datatable <- renderText({"Compare the actual value of popularity to the one predicted and the différence between the two of them.
+      "})
+    output$datatble2 <- renderText({"Color code : "})
+    
+    output$graph_res <- renderText({"Repartition of the difference between prediction and actual value of popularity"})
+    
+    output$summary <- renderText({"Summary of the model selected on the panel on the right. Do not forget to update the view to have the information. "})
+  
+    output$graph_pred <- renderText({"Representation of the actual and predicted value of popularity with the selected model."})
     
   })
   

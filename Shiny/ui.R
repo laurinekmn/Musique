@@ -353,7 +353,7 @@ shinyUI(fluidPage(
              ),
              
              # 5e onglet : prediction with linear regression model
-             tabPanel("Linear regression prediction model",
+             tabPanel("Linear regression & Prediction model",
                       
                       fluidRow(
                         # premier colonne
@@ -401,25 +401,41 @@ shinyUI(fluidPage(
                                navbarPage("Model",
                                           
                                           tabPanel("Summary",
+                                                   textOutput("summary"),
+                                                   br(),
                                                    verbatimTextOutput("summary_model")
                                           ),
                                           
                                           tabPanel("Graph",
+                                                   textOutput("graph_pred"),
+                                                   br(),
                                                    textOutput("rmse"),
+                                                   br(),
                                                    plotlyOutput("graph")
                                           ),
                                           
                                           tabPanel("DataTable",
+                                                   textOutput("datatable"),
+                                                   br(),
+                                                   textOutput("datatble2"),
+                                                   br(),
+                                                   tags$li("Green : abs(popularity) < 10"),
+                                                   tags$li("Orange : abs(popularity) < 20"),
+                                                   tags$li("Red : abs(popularity) > 20"),
+                                                   br(),
                                                    DT::dataTableOutput("DataTable")
                                           ),
                                           
                                           tabPanel("Graph residual",
+                                                   textOutput("graph_res"),
+                                                   br(),
                                                    plotlyOutput("graph_residual")
                                           ),
                                           
                                           tabPanel("Your prediction",
                                                    
                                                    textOutput("exp_pred"),
+                                                   br(),
                                                    
                                                    selectInput(
                                                      inputId = "model_utilise",
@@ -595,7 +611,7 @@ shinyUI(fluidPage(
                                                            size = NULL
                                                          )
                                                        ),
-                                                       
+                                                       br(),
                                                        textOutput("prediction")
                                                        
                                                      ),
@@ -723,7 +739,7 @@ shinyUI(fluidPage(
                                                          width = NULL,
                                                          size = NULL
                                                        ),
-                                                       
+                                                       br(),
                                                        #verbatimTextOutput("test"),
                                                        textOutput("predi")
                                                        

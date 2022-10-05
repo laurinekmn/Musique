@@ -33,7 +33,9 @@ shinyUI(fluidPage(
              #1e onglet : 
              tabPanel(icon=icon("home"), 'Home',
                       fluidRow(
-                        column(width=12,
+                        column(width=2), 
+                        column(width = 8,
+                               br(),
                                textOutput('HomeTitle1'),
                                tags$head(tags$style("#HomeTitle1{color : black;
                                                     font-size: 13px;
@@ -52,11 +54,23 @@ shinyUI(fluidPage(
                                                     text-align: center;
                                                     }"
                                )
+                               ), 
+                               br(),
+                               br(), 
+                               textOutput("HomePara"), 
+                               tags$head(tags$style("#HomePara{color: black;
+                                                    font-size: 18px;
+                                                    font-family: Arial,serif;
+                                                    font-style: normal;
+                                                    text-align: justified;
+                                                    }"
+                               )
                                )
                                
                                
                                
-                        )
+                        ), 
+                        column(width = 2)
                         
                       )),
              # 2e onglet : dataset description (features explanation)
@@ -310,9 +324,6 @@ shinyUI(fluidPage(
                                  actionButton("goButton3", "Update view", class = "btn-success", icon("refresh"))
                                  
                                  
-                                 # régler radio buttons dans le server 
-                                 # ajout fonction export des images 
-                                 
                                )
                                
                         ), 
@@ -333,16 +344,54 @@ shinyUI(fluidPage(
                                                    
                                           ), 
                                           tabPanel("Eigenvalues", 
+                                                   textOutput("eigenvalues"),
+                                                   br(),
+                                                   tags$head(tags$style("#eigenvalues{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    verbatimTextOutput(outputId = "eig")
+                                                   
                                                    
                                                    
                                           ), 
                                           tabPanel("Features", 
+                                                   textOutput("featuresFAMD"),
+                                                   br(),
+                                                   tags$head(tags$style("#featuresFAMD{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    verbatimTextOutput(outputId = "var")
                                                    
                                           ),
-                                          tabPanel("Infos"
+                                          
+                                          tabPanel("Recommendations",
+                                                   textOutput("recomdt"),
                                                    
+                                                   tags$head(tags$style("#recomdt{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br()
+                                                   # selectInput(inputId = "song_reco", label = "The song to generate recommendations from...", choices = names(subset_famd[,"track_name"]) )
+                                                   
+                                                   
+                                                   ),
+                                          tabPanel("Details", 
+                                                   textOutput("FAMD_details"), 
+                                                   tags$head(tags$style("#FAMD_details{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   )
                                           )
                                )
                         )

@@ -1,0 +1,4 @@
+Welcome to Details. Here you will find information about FAMD tuning, but also how the recommendation tab works. 
+\n
+The variables used to measure distance between statistical individuals are the following : tempo, ... 
+As long as there are both quantitatives and qualitatives variables, we performed an FAMD. It was performed using FAMD function (FactoMineR package). 

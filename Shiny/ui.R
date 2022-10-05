@@ -142,7 +142,8 @@ shinyUI(fluidPage(
                                )
                                ),
                                
-                               dataTableOutput("features_info")
+                               dataTableOutput("features_info"), 
+                               verbatimTextOutput("dd_summary")
                         ), 
                         column(width = 1)
                       )

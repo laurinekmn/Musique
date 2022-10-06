@@ -10,7 +10,7 @@
 library(shiny)
 library(colourpicker)
 library(rAmCharts)
-library(bslib)
+#library(bslib)
 
 musique <- read.csv("../musique.csv", sep=";")
 

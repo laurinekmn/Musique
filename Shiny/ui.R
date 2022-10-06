@@ -392,9 +392,9 @@ shinyUI(fluidPage(
                                                     font-style: normal;
                                                     }")
                                                    ),
-                                                   br()
-                                                   # selectInput(inputId = "song_reco", label = "The song to generate recommendations from...", choices = names(subset_famd[,"track_name"]) )
-                                                   
+                                                   br(),
+                                                   selectInput(inputId = "genre_reco", label = "Filter by genre", choices = c(subset$music_genre), multiple = TRUE),
+                                                   uiOutput("artist_genre")
                                                    
                                                    ),
                                           tabPanel("Details", 

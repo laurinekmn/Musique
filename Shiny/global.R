@@ -70,6 +70,14 @@ dim1 <- dim(musique)
 
 tabfeat <- fread("Data/features_info.csv", sep=";")
 
+## Subset: 10% of each music_genre  (used in FAMD tab) 
+
+subset <- musique %>% 
+  group_by(music_genre) %>%
+  sample_frac(size = 0.10, replace = FALSE)
+
+
+
 
 
 ######################################

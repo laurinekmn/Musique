@@ -97,10 +97,6 @@ shinyServer(function(input, output) {
   
   # FAMD & Recommendations
   
-  # Subset: 10% of each music_genre 
-  subset <- musique %>% 
-    group_by(music_genre) %>%
-    sample_frac(size = 0.10, replace = FALSE)
   
   #FAMD on subset
   res.FAMD <- FAMD(subset[,-c(1:3,16)], 
@@ -127,6 +123,13 @@ shinyServer(function(input, output) {
   output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})
   output$recomdt = renderText({paste("In this tab, choose a song from the list and get recommended a few others that you might like as well. See Details tab to learn more about the FAMD tuning.")})
  
+  ## Recommendation tab
+  
+  output$artist_genre <- renderUI({
+    selectInput(inputId = "artist_reco", label = "Filter by artist", choices = c(subset[which (subset$music_genre %in% input$genre_reco),]$artist_name))
+  })
+  
+  
   output$FAMD_details = renderText({paste(read_file("Data/FAMD_details.txt"))})
   
      # Split train test

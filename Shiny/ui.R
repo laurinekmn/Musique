@@ -166,8 +166,18 @@ shinyUI(fluidPage(
                                                     }"
                                )
                                ),
-                               
+                              br(),
                                dataTableOutput("features_info"), 
+                               br(),
+                               textOutput('DataTitle4'),
+                               tags$head(tags$style("#DataTitle4{color : 1d3624;
+                                                    font-size: 28px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                               )
+                               ),
+                               br(),
                                verbatimTextOutput("dd_summary")
                         ), 
                         column(width = 1)

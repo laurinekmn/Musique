@@ -28,6 +28,7 @@ shinyServer(function(input, output) {
   output$DataPara2 <- renderText({paste("Before the start of the analysis, the dataset has been preprocessed.")})
   output$DataPara2_2 <- renderText({paste("The resulting dataset has", dim1[1], "rows and", dim1[2], "columns.")})
   output$DataTitle3 <- renderText({paste("Features description")})
+  output$DataTitle4 <- renderText({paste("Summary")})
   output$dd_summary <- renderPrint({summary(musique)})
   
   output$features_info <- renderDataTable({tabfeat})

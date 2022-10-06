@@ -1,15 +1,10 @@
 
-
 ######################################
 # Packages 
 ######################################
 
 library(bslib)
-<<<<<<< HEAD
-library(colourpicker) 
-=======
 library(colourpicker)
->>>>>>> 4566c19802f58d455f557a9ca64bdf89b5ab6f93
 library(data.table)
 library(DT)
 library(dplyr)
@@ -74,15 +69,10 @@ dim1 <- dim(musique)
 
 tabfeat <- fread("Data/features_info.csv", sep=";")
 
+best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
 
 
 ######################################
 # Functions
 ######################################
-
-
-
-
-
-
 

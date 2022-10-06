@@ -129,6 +129,14 @@ shinyServer(function(input, output) {
     selectInput(inputId = "artist_reco", label = "Filter by artist", choices = c(subset[which (subset$music_genre %in% input$genre_reco),]$artist_name))
   })
   
+  output$choose_song <- renderUI({
+    selectInput(inputId = "song_to_reco", label = "Choose the song to iniate a recommendation", choices = c(subset[which (subset$artist_name %in% input$artist_reco),]$track_name))
+  })
+  
+  output$your_song <- renderText({paste("Your choice: ", input$song_to_reco, "by", input$artist_reco)})
+  output$song_recos_subtitle <- renderText("Our Music Recommendations")
+  
+  ## FAMD Details tab 
   
   output$FAMD_details = renderText({paste(read_file("Data/FAMD_details.txt"))})
   

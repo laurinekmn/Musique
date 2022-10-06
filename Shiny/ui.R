@@ -394,7 +394,26 @@ shinyUI(fluidPage(
                                                    ),
                                                    br(),
                                                    selectInput(inputId = "genre_reco", label = "Filter by genre", choices = c(subset$music_genre), multiple = TRUE),
-                                                   uiOutput("artist_genre")
+                                                   uiOutput("artist_genre"),
+                                                   uiOutput("choose_song"),
+                                                   br(),
+                                                   textOutput("your_song"), 
+                                                   tags$head(tags$style("#your_song{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ), 
+                                                   br(), 
+                                                   textOutput("song_recos_subtitle"),
+                                                   tags$head(tags$style("#song_recos_subtitle{color : 1d3624;
+                                                    font-size: 28px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                                                   )
+                                                   )
+                                                   
                                                    
                                                    ),
                                           tabPanel("Details", 

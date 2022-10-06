@@ -211,7 +211,7 @@ shinyServer(function(input, output) {
       
       
       
-    })
+    }) 
     
     titre2 <- eventReactive(input$goButton3, {input$FAMD2_title})
     output$FAMD2 <- renderPlot(

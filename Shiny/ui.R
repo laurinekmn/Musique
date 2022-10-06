@@ -269,7 +269,7 @@ shinyUI(fluidPage(
                                             
                                             actionButton("goButton2", "Update view", class = "btn-success", icon("refresh")),
                                             
-                                            br(),
+                                            br(), 
                                             
                                             br(),
                                             

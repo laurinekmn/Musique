@@ -315,7 +315,7 @@ shinyUI(fluidPage(
                                                    textOutput("cor"),
                                                    br(),
                                                    
-                                                   plotOutput("scatterplot")
+                                                   plotlyOutput("scatterplot")
                                           )
                                           
                                    )
@@ -355,7 +355,7 @@ shinyUI(fluidPage(
                                                    ),
                                                    br(),
                                                    
-                                                   plotOutput("barchart")
+                                                   plotlyOutput("barchart")
                                           )
                                           
                                    )
@@ -385,6 +385,15 @@ shinyUI(fluidPage(
                         column(width = 9, 
                                navbarPage("FAMD", 
                                           tabPanel("Graphs", 
+                                                   textOutput("graphAFMD"),
+                                                   tags$head(tags$style("#graphAFMD{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   
                                                    plotOutput(outputId = "FAMD1"),
                                                    br(),
                                                    fluidRow(

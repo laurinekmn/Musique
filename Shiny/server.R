@@ -67,13 +67,13 @@ shinyServer(function(input, output) {
 
 
   titre_scatter <- eventReactive(input$goButton2, {input$titre_scat})
-  output$scatterplot <- renderPlot({
+  output$scatterplot <- renderPlotly({
 
     musique_sample <- musique_sample()
     ggplot(musique_sample, 
            aes(x = musique_sample[, var_scat_x()], y = musique_sample[, var_scat_y()], 
                col = musique_sample$music_genre)) + 
-      geom_point(size = 2.5) +
+      geom_point(size = 0.75) +
       theme_bw() + 
       theme(legend.text = element_text(size=15),
             legend.title = element_text(size=15),
@@ -93,7 +93,7 @@ shinyServer(function(input, output) {
 
   
   # Barchart
-  output$barchart <- renderPlot({
+  output$barchart <- renderPlotly({
     
     tab <- table(musique$music_genre, musique[,input$var_bar])
     
@@ -149,9 +149,11 @@ shinyServer(function(input, output) {
               habillage=color(),
               title= titre(),
               cex=0.85,cex.main=0.85,cex.axis=0.85)
-    
-    
+  
   })
+  
+
+  output$graphAFMD = renderText("Graphic of the AFMD with temp, mode, key, loudness, liveness, instrumentalness, speechiness, acousticness and duration as active variables. The music are colored according to the variable you choose on the side.You need to update the view to have the graphic.")
   output$eigenvalues = renderText({paste("Eigenvalues of the FAMD. See Details tab to learn more about the FAMD tuning.")})
   output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})
   output$recomdt = renderText({paste("In this tab, choose a song from the list and get recommended a few others that you might like as well. See Details tab to learn more about the FAMD tuning.")})
@@ -436,41 +438,41 @@ shinyServer(function(input, output) {
   # txt <- read.table("Data/testdoc.txt")
   
   
-  observeEvent(input$model_utilise, {
-    shinyjs::refresh()
-  })
+  # observeEvent(input$model_utilise, {
+  #   shinyjs::refresh()
+  # })
   
-  # Données de prédiction entrées par l'utilisateur
-  data_pred <- reactive({data.frame(acousticness = input$Ac, danceability = input$Dan,
-                                    duration_ms = input$Dur, energy = input$En,
-                                    instrumentalness = input$Ins, key = input$Key,
-                                    liveness = input$Live, loudness = input$Lou,
-                                    mode = input$mode, speechiness = input$Spee,
-                                    tempo = input$Tempo, valence = input$Val,
-                                    music_genre = input$Genre)})
-  
-  
-  #best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
-  #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
-  
-  output$prediction <- renderText({paste("Prediction :",predict(model(), newdata = data_pred()))})
-  
+  # # Données de prédiction entrées par l'utilisateur
+  # data_pred <- reactive({data.frame(acousticness = input$Ac, danceability = input$Dan,
+  #                                   duration_ms = input$Dur, energy = input$En,
+  #                                   instrumentalness = input$Ins, key = input$Key,
+  #                                   liveness = input$Live, loudness = input$Lou,
+  #                                   mode = input$mode, speechiness = input$Spee,
+  #                                   tempo = input$Tempo, valence = input$Val,
+  #                                   music_genre = input$Genre)})
+  # 
+  # 
+  # #best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
+  # #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
+  # 
+  # output$prediction <- renderText({paste("Prediction :",predict(model(), newdata = data_pred()))})
+  # 
   
   # # Meilleur model
   # 
   # 
   # # Données de prédiction entrées par l'utilisateur
-  data_prediction <- reactive({data.frame(acousticness = input$Ac2, danceability = input$Dan2,
-                                          duration_ms = input$Dur2, energy = input$En2,
-                                          instrumentalness = input$Ins2, key = input$Key2,
-                                          liveness = input$Live2, loudness = input$Lou2,
-                                          mode = input$mode2, speechiness = input$Spee2,
-                                          tempo = input$Tempo2, valence = input$Val2,
-                                          music_genre = input$Genre2)})
-  
-  #output$test <- renderPrint({data_prediction()})
-  output$predi <- renderText({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
-  
+  # data_prediction <- reactive({data.frame(acousticness = input$Ac2, danceability = input$Dan2,
+  #                                         duration_ms = input$Dur2, energy = input$En2,
+  #                                         instrumentalness = input$Ins2, key = input$Key2,
+  #                                         liveness = input$Live2, loudness = input$Lou2,
+  #                                         mode = input$mode2, speechiness = input$Spee2,
+  #                                         tempo = input$Tempo2, valence = input$Val2,
+  #                                         music_genre = input$Genre2)})
+  # 
+  # #output$test <- renderPrint({data_prediction()})
+  # output$predi <- renderText({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
+  # 
   # Explication des onglets
   
   output$exp_pred <- renderText({"You have an idea for a new song ? Let's try to predict the popularity of your future song !

@@ -166,8 +166,18 @@ shinyUI(fluidPage(
                                                     }"
                                )
                                ),
-                               
+                              br(),
                                dataTableOutput("features_info"), 
+                               br(),
+                               textOutput('DataTitle4'),
+                               tags$head(tags$style("#DataTitle4{color : 1d3624;
+                                                    font-size: 28px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                               )
+                               ),
+                               br(),
                                verbatimTextOutput("dd_summary")
                         ), 
                         column(width = 1)
@@ -588,6 +598,7 @@ shinyUI(fluidPage(
                                                      #              step = NA),
                                                      #input.Ac = NA
                                                      
+
                                                      conditionalPanel(
                                                        "input.model_utilise =='Your variables'",
                                                        
@@ -746,6 +757,7 @@ shinyUI(fluidPage(
                                                        textOutput("prediction")
                                                        
                                                      ),
+
                                                      
                                                      conditionalPanel(
                                                        "input.model_utilise =='Best model variables'",

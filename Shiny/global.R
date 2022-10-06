@@ -1,5 +1,4 @@
 
-
 ######################################
 # Packages 
 ######################################
@@ -14,7 +13,7 @@ library(ggplot2)
 library(FactoMineR)
 library(plotly)
 library(rAmCharts)
-library(readr)
+library(readr) 
 library(shiny)
 
 
@@ -94,10 +93,4 @@ best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_
 ######################################
 # Functions
 ######################################
-
-
-
-
-
-
 

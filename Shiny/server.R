@@ -7,11 +7,11 @@
 #    http://shiny.rstudio.com/
 #
 
-
-# Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
-  output$allthatjazz <- renderText({"All that Jazz"})
+  # 1e onglet : home -----
+  
+  output$allthatjazz <- renderText({"All that Jazz"}) 
   
   # Home text outputs
   output$HomeTitle1 <- renderText({"WELCOME TO"})
@@ -19,6 +19,7 @@ shinyServer(function(input, output) {
   
   output$HomePara = renderText({paste(read_file("Data/home.txt"))})
   
+  # 2e onglet : dataset description (features explanation) -----
   
   # Data description text outputs
   output$DataTitle1 <- renderText({paste("General structure of the dataset")})
@@ -31,7 +32,7 @@ shinyServer(function(input, output) {
   
   output$features_info <- renderDataTable({tabfeat})
   
-  # Visualisation 
+  # 3e onglet : visualisation graphique des données ----------
   # Histogram
   output$distPlot <- renderAmCharts({
     
@@ -53,6 +54,7 @@ shinyServer(function(input, output) {
     amBoxplot(object = as.formula(paste(input$var_box, "~ music_genre")),
               data = musique,
               col = input$color_box, border = "FFFFFF", main = input$titre_box,
+              ylab = paste(input$var_box), xlab = "Music genre",
               export = TRUE, zoom = TRUE)
   })
   
@@ -64,7 +66,7 @@ shinyServer(function(input, output) {
   
   output$scatterplot <- renderPlot({
     #input$goButton2
-    #set.seed(1234)
+
     musique_sample <- musique_sample()
     #musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
     plot(musique_sample[, var_scat_x()], musique_sample[, var_scat_y()], 
@@ -74,6 +76,13 @@ shinyServer(function(input, output) {
     legend(input$legend_pos,levels(musique_sample$music_genre),
            col = musique_sample$music_genre, pch=19, cex=input$legend_size,bty="n")
     
+  })
+  
+  # cor
+  output$cor <- renderText({
+    # input$goButton
+    paste("cor =",round(cor(musique[, var_scat_x()], musique[, var_scat_y()]),4)) # it works but it's wrong
+    # paste("cor =",round(cor(musique[, var_scat_x()], musique[, var_scat_y()]),4)) # it doesn't works but it's right
   })
   
   # Barchart
@@ -87,14 +96,23 @@ shinyServer(function(input, output) {
       geom_bar(position = "dodge", stat = "identity") + 
       scale_fill_viridis_d(option = input$col_bar, end = 0.8) +
       theme_bw() + 
-      labs(x = "Music genre",y = "Prevalence") +
-      ggtitle(input$titre_bar)+ labs(fill = Vars2)
+
+      labs(x = "Music genre",y = "Prevalence", fill=paste(input$var_bar)) +
+      ggtitle(input$titre_bar)
+
     
   })
   
+  # Explication des onglets
+  
+  output$exp_hist <- renderText({"Choose the variable you want to represent and have a look at the distribution."})
+  output$exp_box <- renderText({"Choose the variable you want to represent and have a look at the distribution in function of the music genre."})
+  output$exp_scat <- renderText({"Do not forget to update the view to see the plot. 
+    REMEMBER: if you choose the same variable for both axes, you will obtain a right and correlation = 1."})
+  output$exp_bar <- renderText({"Representation of the music genre distribution according to key or mode (the two categorical variables of the dataset)."})
   
   
-  # FAMD & Recommendations
+  # 4e onglet : FAMD & Song Recommendations ------
   
   # Subset: 10% of each music_genre 
   subset <- musique %>% 
@@ -126,9 +144,10 @@ shinyServer(function(input, output) {
   output$eigenvalues = renderText({paste("Eigenvalues of the FAMD. See Details tab to learn more about the FAMD tuning.")})
   output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})
   output$recomdt = renderText({paste("In this tab, choose a song from the list and get recommended a few others that you might like as well. See Details tab to learn more about the FAMD tuning.")})
- 
+  
   output$FAMD_details = renderText({paste(read_file("Data/FAMD_details.txt"))})
   
+
      # Split train test
     
     musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
@@ -285,9 +304,173 @@ shinyServer(function(input, output) {
     output$graph_res <- renderText({"Repartition of the difference between prediction and actual value of popularity"})
     
     output$summary <- renderText({"Summary of the model selected on the panel on the right. Do not forget to update the view to have the information. "})
+
   
-    output$graph_pred <- renderText({"Representation of the actual and predicted value of popularity with the selected model."})
+  # 5e onglet : prediction with linear regression model ------
+  
+  # Split train test
+  
+  musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
+  musique_test <- reactive(subset({dplyr::anti_join(musique, musique_train())}))
+  train <-reactive({subset({musique_train()[, c("popularity", input$vars_quali, input$vars_quanti)]})})
+  
+  
+  # Linear model
+  
+  model <- eventReactive(input$goButton,{
+    
+    lm(popularity~.^2, data = train())
     
   })
   
+  # Linear Regression output
+  output$summary_model <- renderPrint({
+    input$goButton
+    summary(model())
+  })
+  
+  # RMSE
+  output$rmse <- renderText({
+    input$goButton
+    paste("RMSE =",MLmetrics::RMSE(predict(model()), musique_test()$popularity)) # ajouter au shiny
+  })
+  
+  # Datatable
+  output$DataTable <- DT::renderDataTable({
+    input$goButton
+    
+    DT::datatable(musique_test() %>% mutate(predicted = round(predict(model(), newdata = musique_test())), residuals = (popularity - predicted)) %>% select(popularity, predicted, residuals), 
+                  rownames = FALSE, colnames = c('actual popularity', 'predicted popularity', 'residuals'), 
+                  extensions = c('Buttons', 'Responsive'), 
+                  options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrtp', 
+                                 buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, 
+                                 lengthMenu = c(20, 100, 1000, nrow(musique)), 
+                                 #scrollY = 300, 
+                                 scrollCollapse = TRUE
+                  )) %>% DT::formatStyle(
+                    'residuals',
+                    backgroundColor = styleInterval(c(-20, -10, 10, 20), c("red","orange", 'green', 'orange', "red"))
+                    
+                  )
+    
+  })
+  
+  # Plotly Scatterplot: predicted vs actual popularity
+  output$graph <- renderPlotly({
+    input$goButton
+    
+    plot_ly(data = musique_test(), y = ~predict(model(), newdata = musique_test()), x = ~popularity,
+            type = "scatter", mode = "markers",
+            marker = list(size = 5,
+                          color = '#FFFFFF',
+                          line = list(color = '#EA6345', 
+                                      width = 2))) %>% 
+      
+      add_lines(y = ~popularity, color = I("black"),
+                marker = list(size=1, color="black", line = list(color = 'black', 
+                                                                 width = 0))) %>%
+      layout(title = '',
+             yaxis = list(zeroline = FALSE, title = "predicted popularity"),
+             xaxis = list(zeroline = FALSE, title = "actual popularity"),
+             showlegend=F)
+    
+    
+  })
+  
+  # Plotly Histogram of residuals
+  output$graph_residual <- renderPlotly({
+    input$goButton
+    
+    
+    plot_ly(musique_test(), x = ~round(residuals(model()),2), type = "histogram", marker = list(color = "#EA6345",
+                                                                                                line = list(color = "#FFFFFF", width = 1))) %>%   layout(title = '',
+                                                                                                                                                         yaxis = list(zeroline = FALSE, title = "frequency"),
+                                                                                                                                                         xaxis = list(zeroline = FALSE, title = "residual",  titlefont = list(
+                                                                                                                                                           family = "Lucida Console, Courier New, monospace", size = 12, color = "#FFFFFF"), 
+                                                                                                                                                           tickfont = list(
+                                                                                                                                                             family = "Lucida Console, Courier New, monospace", size = 10, color = "#FFFFFF"), color =  "white")) 
+    
+    
+    
+    
+    
+  }) 
+  
+  titre2 <- eventReactive(input$goButton3, {input$FAMD2_title})
+  output$FAMD2 <- renderPlot(
+    {# Features graph 
+      #input$updatevisu
+      plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title=titre2())
+    })
+  
+  titre3 <- eventReactive(input$goButton3, {input$FAMD3_title})
+  output$FAMD3 <- renderPlot({
+    # Correlation circle
+    input$updatevisu
+    plot.FAMD(res.FAMD, choix='quanti',title=titre3())
+  })
+  
+  # eigen values 
+  output$eig <- renderPrint(res.FAMD$eig)
+  
+  # features info 
+  output$var <- renderPrint(res.FAMD$var)
+  # 
+  # # info 
+  # 
+  # txt <- read.table("Data/testdoc.txt")
+  
+  
+  observeEvent(input$model_utilise, {
+    shinyjs::refresh()
+  })
+  
+  # Données de prédiction entrées par l'utilisateur
+  data_pred <- reactive({data.frame(acousticness = input$Ac, danceability = input$Dan,
+                                    duration_ms = input$Dur, energy = input$En,
+                                    instrumentalness = input$Ins, key = input$Key,
+                                    liveness = input$Live, loudness = input$Lou,
+                                    mode = input$mode, speechiness = input$Spee,
+                                    tempo = input$Tempo, valence = input$Val,
+                                    music_genre = input$Genre)})
+  
+  
+  #best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
+  #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
+  
+  output$prediction <- renderText({paste("Prediction :",predict(model(), newdata = data_pred()))})
+  
+  
+  # # Meilleur model
+  # 
+  # 
+  # # Données de prédiction entrées par l'utilisateur
+  data_prediction <- reactive({data.frame(acousticness = input$Ac2, danceability = input$Dan2,
+                                          duration_ms = input$Dur2, energy = input$En2,
+                                          instrumentalness = input$Ins2, key = input$Key2,
+                                          liveness = input$Live2, loudness = input$Lou2,
+                                          mode = input$mode2, speechiness = input$Spee2,
+                                          tempo = input$Tempo2, valence = input$Val2,
+                                          music_genre = input$Genre2)})
+  
+  #output$test <- renderPrint({data_prediction()})
+  output$predi <- renderText({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
+  
+  # Explication des onglets
+  
+  output$exp_pred <- renderText({"You have an idea for a new song ? Let's try to predict the popularity of your future song !
+      You can choose to predict it thanks to the variables you have selected or the variables of the best model (à définir)"})
+  
+  output$datatable <- renderText({"Compare the actual value of popularity to the one predicted and the différence between the two of them.
+      "})
+  output$datatble2 <- renderText({"Color code : "})
+  
+  output$graph_res <- renderText({"Repartition of the difference between prediction and actual value of popularity"})
+  
+  output$summary <- renderText({"Summary of the model selected on the panel on the right. Do not forget to update the view to have the information. "})
+  
+  output$graph_pred <- renderText({"Representation of the actual and predicted value of popularity with the selected model."})
+  
+})
+
 #})

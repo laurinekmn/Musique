@@ -1,0 +1,184 @@
+---
+title: "Musique"
+output: pdf_document
+---
+
+```{r, include=F}
+rm(list=ls())
+
+musique <- read.csv("musique.csv", sep=";", header=TRUE, na.strings = TRUE, dec=".")
+
+# As.factor
+musique$music_genre <- as.factor(musique$music_genre)
+musique$mode <- as.factor(musique$mode)
+musique$key <- as.factor(musique$key)
+
+# As.numeric
+musique$instrumentalness <- as.numeric(musique$instrumentalness)
+length(which(is.na(musique$instrumentalness)))
+
+musique$acousticness <- as.numeric(musique$acousticness)
+length(which(is.na(musique$acousticness)))
+
+musique$tempo <- as.numeric(musique$tempo)
+length(which(is.na(musique$tempo)))
+
+# On prend les lignes sans NA
+musique <- musique[stats::complete.cases(musique),]
+
+head(musique)
+str(musique)
+```
+
+# Visualisation
+
+## UNIVARIATE
+
+### Histogram
+
+```{r, out.width="75%", fig.align='center'}
+x <- musique[,c(4:9, 11:12, 14:15, 17)]
+
+# Histogram: continous variables
+for(i in 1:11){
+  hist(x = x[,i],
+       main = "Histogram",
+       xlab = colnames(x)[i])
+}
+```
+
+### Table/barcharts
+
+```{r, out.width="75%", fig.align='center'}
+library(tidyverse)
+
+# Barchart: music_genre 
+tab1 <- table(musique$music_genre)
+tab1[-1]
+
+as.data.frame(tab1[-1]) %>% # must be a dataframe
+  rename(Genre = Var1) %>% 
+  ggplot(aes(x = Genre, y = Freq)) + 
+  geom_bar(position = "dodge", stat = "identity") + 
+  scale_fill_viridis_d(option = "B", end = 0.8) +
+  theme_bw() + 
+  labs(x = "Music genre",
+       y = "Prevalence") 
+
+# Barchart: mode
+tab2 <- table(musique$mode)
+tab2[-1]
+
+as.data.frame(tab2[-1]) %>% # must be a dataframe
+  rename(Mode = Var1) %>% 
+  ggplot(aes(x = Mode, y = Freq)) + 
+  geom_bar(position = "dodge", stat = "identity") + 
+  scale_fill_viridis_d(option = "B", end = 0.8) +
+  theme_bw() + 
+  labs(x = "Mode",
+       y = "Prevalence") 
+
+# Barchart: key
+tab3 <- table(musique$key)
+tab3[-1]
+
+as.data.frame(tab3[-1]) %>% # must be a dataframe
+  rename(Key = Var1) %>% 
+  ggplot(aes(x = Key, y = Freq)) + 
+  geom_bar(position = "dodge", stat = "identity") + 
+  scale_fill_viridis_d(option = "B", end = 0.8) +
+  theme_bw() + 
+  labs(x = "Key",
+       y = "Prevalence")
+```
+
+## MULTIVARIATE
+
+### Boxplot
+
+```{r, out.width="75%", fig.align='center'}
+# Boxplot: continous variables vs music_genre
+for(i in 1:11){
+  boxplot(formula = x[,i] ~ musique$music_genre,
+       main = "Boxplot",
+       xlab = "Music genre",
+       ylab = colnames(x)[i])
+}
+
+# Boxplot: continous variables vs music_genre
+for(i in 1:11){
+  boxplot(formula = x[,i] ~ musique$music_genre,
+       main = "Boxplot",
+       xlab = "Music genre",
+       ylab = colnames(x)[i])
+}
+```
+
+### Table/barcharts
+
+- Mode$major: gai, lumineux et ouvert;
+- Mode$minor: triste, gris et mélancolique.
+
+```{r, out.width="75%", fig.align='center'}
+# Barchart: mode vs music_genre 
+tab4 <- table(musique$music_genre, musique$mode)
+tab4[-1,2:3]
+
+as.data.frame(tab4[-1,2:3]) %>% # must be a dataframe
+  group_by(Var2) %>% 
+  rename(Genre = Var1,
+         Mode = Var2) %>% 
+  ggplot(aes(x = Genre, y = Freq, fill = Mode)) + # colored by mode
+  geom_bar(position = "dodge", stat = "identity") + 
+  scale_fill_viridis_d(option = "B", end = 0.8) +
+  theme_bw() + 
+  labs(x = "Music genre",
+       y = "Prevalence") 
+
+# Barchart: key vs music_genre 
+tab5 <- table(musique$music_genre, musique$key)
+tab5[-1,-1]
+
+as.data.frame(tab5[-1,-1]) %>% # must be a dataframe
+  group_by(Var2) %>% 
+  rename(Genre = Var1,
+         Key = Var2) %>% 
+  ggplot(aes(x = Genre, y = Freq, fill = Key)) + # colored by key
+  geom_bar(position = "dodge", stat = "identity") + 
+  scale_fill_viridis_d(option = "B", end = 0.8) +
+  theme_bw() + 
+  labs(x = "Music genre",
+       y = "Prevalence") 
+```
+
+### Scatterplots
+
+```{r, out.width="75%", fig.align='center'}
+sample_ind = sample(1:nrow(musique),500)
+musique_red = musique[sample_ind,]
+
+abs(cor(musique_red[,c(4:9, 11:12, 14:15, 17)])) > 0.6
+
+cor(musique_red$energy, musique_red$acousticness)
+plot(musique_red$energy, musique_red$acousticness, 
+     col=musique_red$music_genre,
+     xlab="Energy",ylab="Acousticness", pch=19)
+legend("bottomleft",levels(musique_red$music_genre)[-1],
+       col=musique_red$music_genre,pch=19, cex=0.8,bty="n")
+
+cor(musique_red$loudness, musique_red$acousticness)
+plot(musique_red$loudness, musique_red$acousticness, 
+     col=musique_red$music_genre,
+     xlab="Loudness",ylab="Acousticness", pch=19)
+legend("bottomleft",levels(musique_red$music_genre)[-1],
+       col=musique_red$music_genre,pch=19, cex=0.8,bty="n")
+
+cor(musique_red$loudness, musique_red$energy)
+plot(musique_red$loudness, musique_red$energy, 
+     col=musique_red$music_genre,
+     xlab="Loudness",ylab="Energy", pch=19)
+legend("topleft",levels(musique_red$music_genre)[-1],
+       col=musique_red$music_genre,pch=19, cex=0.8,bty="n")
+
+```
+

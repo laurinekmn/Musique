@@ -7,10 +7,8 @@
 #    http://shiny.rstudio.com/
 #
 
-
-# Define UI for application that draws a histogram
 shinyUI(fluidPage(
-  
+   
   theme = bs_theme(version = 4, 
                    bootswatch = "minty", 
                    bg = "GhostWhite", 
@@ -30,7 +28,7 @@ shinyUI(fluidPage(
              ),
              
              
-             #1e onglet : 
+             # 1e onglet : home -----
              tabPanel(icon=icon("home"), 'Home',
                       fluidRow(
                         column(width=2), 
@@ -78,7 +76,7 @@ shinyUI(fluidPage(
                                  "How the Spotify Algorithm actually works - Youtube video")
                                
                                
-                        
+                               
                                
                                
                                
@@ -86,7 +84,7 @@ shinyUI(fluidPage(
                         column(width = 2)
                         
                       )),
-             # 2e onglet : dataset description (features explanation)
+             # 2e onglet : dataset description (features explanation) -----
              tabPanel("Data description", 
                       fluidRow(
                         column(width=3, 
@@ -176,7 +174,7 @@ shinyUI(fluidPage(
                       )
              ),
              
-             # 3e onglet : visualisation graphique des données
+             # 3e onglet : visualisation graphique des données ----------
              navbarMenu("Visualization",
                         
                         tabPanel("Histogram", 
@@ -205,14 +203,23 @@ shinyUI(fluidPage(
                                    ), 
                                    # deuxieme colonne
                                    column(width = 9, 
-                                          #tabsetPanel(
+                                          
                                           tabPanel("Histogram", 
-                                                   # plotOutput -> amChartsOutput
+                                                   
+                                                   textOutput("exp_hist"),
+                                                   tags$head(tags$style("#exp_hist{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   
                                                    amChartsOutput("distPlot"),
-                                                   # classes (div centrée)
+                                                   
                                                    div(textOutput("n_bins"), align = "center")
                                           )
-                                          #)
+                                          
                                    )
                                  )),
                         
@@ -239,7 +246,16 @@ shinyUI(fluidPage(
                                    column(width = 9, 
                                           #tabsetPanel(
                                           tabPanel("Boxplot", 
-                                                   # plotOutput -> amChartsOutput
+                                                   
+                                                   textOutput("exp_box"),
+                                                   tags$head(tags$style("#exp_box{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   
                                                    amChartsOutput("boxplot")
                                           )
                                           #)
@@ -279,17 +295,31 @@ shinyUI(fluidPage(
                                                                                                                             "bottomright",
                                                                                                                             "topright")),
                                             # size of the legend
-                                            sliderInput("legend_size", "Legend's size:", min = 0.6, max = 1.5, value = 0.8),
+
+                                            sliderInput("legend_size", "Legend's size:", min = 0.6, max = 1.5, value = 1),
+
                                           )
                                    ), 
                                    # deuxieme colonne
                                    column(width = 9, 
-                                          # tabsetPanel(
+                                          
                                           tabPanel("Scatterplot", 
-                                                   # plotOutput -> amChartsOutput
+                                                   
+                                                   textOutput("exp_scat"),
+                                                   tags$head(tags$style("#exp_scat{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   
+                                                   textOutput("cor"),
+                                                   br(),
+                                                   
                                                    plotOutput("scatterplot")
                                           )
-                                          # )
+                                          
                                    )
                                    
                                  )),
@@ -315,17 +345,27 @@ shinyUI(fluidPage(
                                    ), 
                                    # deuxieme colonne
                                    column(width = 9, 
-                                          #tabsetPanel(
+                                          
                                           tabPanel("Barchart", 
+                                                   
+                                                   textOutput("exp_bar"),
+                                                   tags$head(tags$style("#exp_bar{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   
                                                    plotOutput("barchart")
                                           )
-                                          #)
+                                          
                                    )
                                    
                                  ))
              ),
              
-             # 4e onglet : Song Recommendations 
+             # 4e onglet : FAMD & Song Recommendations ------
              tabPanel("FAMD & Song Recommendations",
                       fluidRow(
                         column(width = 3, 
@@ -400,7 +440,7 @@ shinyUI(fluidPage(
                                                    # selectInput(inputId = "song_reco", label = "The song to generate recommendations from...", choices = names(subset_famd[,"track_name"]) )
                                                    
                                                    
-                                                   ),
+                                          ),
                                           tabPanel("Details", 
                                                    textOutput("FAMD_details"), 
                                                    tags$head(tags$style("#FAMD_details{color : black;
@@ -419,7 +459,7 @@ shinyUI(fluidPage(
                       
              ),
              
-             # 5e onglet : prediction with linear regression model
+             # 5e onglet : prediction with linear regression model ------
              tabPanel("Linear regression & Prediction model",
                       
                       fluidRow(
@@ -469,12 +509,24 @@ shinyUI(fluidPage(
                                           
                                           tabPanel("Summary",
                                                    textOutput("summary"),
+                                                   tags$head(tags$style("#summary{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    br(),
                                                    verbatimTextOutput("summary_model")
                                           ),
                                           
                                           tabPanel("Graph",
                                                    textOutput("graph_pred"),
+                                                   tags$head(tags$style("#graph_pred{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    br(),
                                                    textOutput("rmse"),
                                                    br(),
@@ -483,8 +535,20 @@ shinyUI(fluidPage(
                                           
                                           tabPanel("DataTable",
                                                    textOutput("datatable"),
+                                                   tags$head(tags$style("#datatable{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    br(),
                                                    textOutput("datatble2"),
+                                                   tags$head(tags$style("#datatable2color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    br(),
                                                    tags$li("Green : abs(popularity) < 10"),
                                                    tags$li("Orange : abs(popularity) < 20"),
@@ -495,6 +559,12 @@ shinyUI(fluidPage(
                                           
                                           tabPanel("Graph residual",
                                                    textOutput("graph_res"),
+                                                   tags$head(tags$style("#graph_res{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    br(),
                                                    plotlyOutput("graph_residual")
                                           ),
@@ -502,6 +572,12 @@ shinyUI(fluidPage(
                                           tabPanel("Your prediction",
                                                    
                                                    textOutput("exp_pred"),
+                                                   tags$head(tags$style("#exp_pred{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
                                                    br(),
                                                    
                                                    # selectInput(

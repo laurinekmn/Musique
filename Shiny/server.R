@@ -62,7 +62,7 @@ shinyServer(function(input, output) {
   
   output$scatterplot <- renderPlot({
     #input$goButton2
-    set.seed(1234)
+    #set.seed(1234)
     musique_sample <- musique_sample()
     #musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
     plot(musique_sample[, var_scat_x()], musique_sample[, var_scat_y()], 
@@ -86,7 +86,7 @@ shinyServer(function(input, output) {
       scale_fill_viridis_d(option = input$col_bar, end = 0.8) +
       theme_bw() + 
       labs(x = "Music genre",y = "Prevalence") +
-      ggtitle(input$titre_bar)
+      ggtitle(input$titre_bar)+ labs(fill = Vars2)
     
   })
   
@@ -109,13 +109,14 @@ shinyServer(function(input, output) {
   # colFAMD1 <- match(input$colorFAMD1, colnames(subset[,-c(1:3,16)]))
   
   color <- eventReactive(input$goButton3, {input$colorFAMD1})
+  titre <- eventReactive(input$goButton3, {input$FAMD1_title})
   output$FAMD1 <- renderPlot({
     input$goButton3
     #input$updatevisu
     plot.FAMD(res.FAMD,invisible=c('quali','quali.sup','ind.sup'),
               select = 'all' ,
               habillage=color(),
-              title= input$FAMD1_title,
+              title= titre(),
               cex=0.85,cex.main=0.85,cex.axis=0.85)
     
     
@@ -205,17 +206,18 @@ shinyServer(function(input, output) {
       
     })
     
-    
+    titre2 <- eventReactive(input$goButton3, {input$FAMD2_title})
     output$FAMD2 <- renderPlot(
       {# Features graph 
-        input$updatevisu
-        plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title=input$FAMD2_title)
+        #input$updatevisu
+        plot.FAMD(res.FAMD,axes=c(1,2),choix='var',cex=1.15,cex.main=1.15,cex.axis=1.15,title=titre2())
       })
     
+    titre3 <- eventReactive(input$goButton3, {input$FAMD3_title})
     output$FAMD3 <- renderPlot({
       # Correlation circle
       input$updatevisu
-      plot.FAMD(res.FAMD, choix='quanti',title=input$FAMD3_title)
+      plot.FAMD(res.FAMD, choix='quanti',title=titre3())
     })
     
     # eigen values 
@@ -243,7 +245,7 @@ shinyServer(function(input, output) {
                                       music_genre = input$Genre)})
     
     
-    best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
+    #best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
     #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
     
     output$prediction <- renderText({paste("Prediction :",predict(model(), newdata = data_pred()))})

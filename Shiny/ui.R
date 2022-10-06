@@ -239,6 +239,12 @@ shinyUI(fluidPage(
                                             # selection des variables y
                                             radioButtons(inputId = "var_scat_y", label = "Y variable: ", choices = colnames(musique)[c(5, 8, 12)]),
                                             
+                                            actionButton("goButton2", "Update view", class = "btn-success", icon("refresh")),
+                                            
+                                            br(),
+                                            
+                                            br(),
+                                            
                                             # position of the legend
                                             radioButtons(inputId = "legend_pos", label = "Legend's position: ", choices = c("bottomleft",
                                                                                                                             "topleft",
@@ -246,9 +252,7 @@ shinyUI(fluidPage(
                                                                                                                             "topright")),
                                             # size of the legend
                                             sliderInput("legend_size", "Legend's size:", min = 0.6, max = 1.5, value = 0.8),
-                                          ),
-                                          
-                                          actionButton("goButton2", "Update view", class = "btn-success", icon("refresh"))
+                                          )
                                    ), 
                                    # deuxieme colonne
                                    column(width = 9, 

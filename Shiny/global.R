@@ -5,7 +5,11 @@
 ######################################
 
 library(bslib)
+<<<<<<< HEAD
+library(colourpicker) 
+=======
 library(colourpicker)
+>>>>>>> 4566c19802f58d455f557a9ca64bdf89b5ab6f93
 library(data.table)
 library(DT)
 library(dplyr)
@@ -14,6 +18,7 @@ library(ggplot2)
 library(FactoMineR)
 library(plotly)
 library(rAmCharts)
+library(readr)
 library(shiny)
 
 

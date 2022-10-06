@@ -7,7 +7,6 @@
 #    http://shiny.rstudio.com/
 #
 
-library(plotly)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -18,6 +17,9 @@ shinyServer(function(input, output) {
   output$HomeTitle1 <- renderText({"WELCOME TO"})
   output$HomeTitle2 <- renderText({"All that Jazz"})
   
+  output$HomePara = renderText({paste(read_file("Data/home.txt"))})
+  
+  
   # Data description text outputs
   output$DataTitle1 <- renderText({paste("General structure of the dataset")})
   output$DataPara1 <- renderText({paste("The raw dataset has", dim0[1], "rows and ",dim0[2]," columns. Each row corresponds to a song identified by an unique id and described by features. The features are described in the table below.")})
@@ -25,7 +27,7 @@ shinyServer(function(input, output) {
   output$DataPara2 <- renderText({paste("Before the start of the analysis, the dataset has been preprocessed.")})
   output$DataPara2_2 <- renderText({paste("The resulting dataset has", dim1[1], "rows and", dim1[2], "columns.")})
   output$DataTitle3 <- renderText({paste("Features description")})
-  
+  output$dd_summary <- renderPrint({summary(musique)})
   
   output$features_info <- renderDataTable({tabfeat})
   
@@ -121,8 +123,13 @@ shinyServer(function(input, output) {
     
     
   })
+  output$eigenvalues = renderText({paste("Eigenvalues of the FAMD. See Details tab to learn more about the FAMD tuning.")})
+  output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})
+  output$recomdt = renderText({paste("In this tab, choose a song from the list and get recommended a few others that you might like as well. See Details tab to learn more about the FAMD tuning.")})
+ 
+  output$FAMD_details = renderText({paste(read_file("Data/FAMD_details.txt"))})
   
-    # Split train test
+     # Split train test
     
     musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
     musique_test <- reactive(subset({dplyr::anti_join(musique, musique_train())}))

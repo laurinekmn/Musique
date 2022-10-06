@@ -238,9 +238,9 @@ shinyServer(function(input, output) {
     # txt <- read.table("Data/testdoc.txt")
     
     
-    observeEvent(input$model_utilise, {
-      shinyjs::refresh()
-    })
+    # observeEvent(input$model_utilise, {
+    #   shinyjs::refresh()
+    # })
     
     # Données de prédiction entrées par l'utilisateur
     data_pred <- reactive({data.frame(acousticness = input$Ac, danceability = input$Dan,
@@ -255,23 +255,23 @@ shinyServer(function(input, output) {
     #best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
     #model_prediction <- reactive({RcmdrMisc::stepwise(model(), direction = "forward/backward", criterion = "AIC", trace = FALSE)})
     
-    output$prediction <- renderText({paste("Prediction :",predict(model(), newdata = data_pred()))})
+    output$prediction <- renderText({paste("Prediction :", round(predict(model(), newdata = data_pred())))})
     
     
     # # Meilleur model
     # 
     # 
     # # Données de prédiction entrées par l'utilisateur
-    data_prediction <- reactive({data.frame(acousticness = input$Ac2, danceability = input$Dan2,
-                                            duration_ms = input$Dur2, energy = input$En2,
-                                            instrumentalness = input$Ins2, key = input$Key2,
-                                            liveness = input$Live2, loudness = input$Lou2,
-                                            mode = input$mode2, speechiness = input$Spee2,
-                                            tempo = input$Tempo2, valence = input$Val2,
-                                            music_genre = input$Genre2)})
+    # data_prediction <- reactive({data.frame(acousticness = input$Ac2, danceability = input$Dan2,
+    #                                         duration_ms = input$Dur2, energy = input$En2,
+    #                                         instrumentalness = input$Ins2, key = input$Key2,
+    #                                         liveness = input$Live2, loudness = input$Lou2,
+    #                                         mode = input$mode2, speechiness = input$Spee2,
+    #                                         tempo = input$Tempo2, valence = input$Val2,
+    #                                         music_genre = input$Genre2)})
     
     #output$test <- renderPrint({data_prediction()})
-    output$predi <- renderText({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
+    #output$predi <- renderText({paste("Prediction :",predict(best_model_prediction, data_prediction()))})
     
     # Explication des onglets
     

@@ -295,11 +295,9 @@ shinyUI(fluidPage(
                                                                                                                             "bottomright",
                                                                                                                             "topright")),
                                             # size of the legend
-<<<<<<< HEAD
+
                                             sliderInput("legend_size", "Legend's size:", min = 0.6, max = 1.5, value = 1),
-=======
-                                            sliderInput("legend_size", "Legend's size:", min = 0.6, max = 1.5, value = 0.8),
->>>>>>> e0a0c05b758a73e7aca30417241dded8e8ca9014
+
                                           )
                                    ), 
                                    # deuxieme colonne

@@ -66,10 +66,7 @@ shinyServer(function(input, output) {
   
   output$scatterplot <- renderPlot({
     #input$goButton2
-<<<<<<< HEAD
-=======
-    #set.seed(1234)
->>>>>>> e0a0c05b758a73e7aca30417241dded8e8ca9014
+
     musique_sample <- musique_sample()
     #musique_sample <- eventReactive(input$goButton2,{musique[sample(1:nrow(musique),input$sampleSize),]})
     plot(musique_sample[, var_scat_x()], musique_sample[, var_scat_y()], 
@@ -99,13 +96,10 @@ shinyServer(function(input, output) {
       geom_bar(position = "dodge", stat = "identity") + 
       scale_fill_viridis_d(option = input$col_bar, end = 0.8) +
       theme_bw() + 
-<<<<<<< HEAD
+
       labs(x = "Music genre",y = "Prevalence", fill=paste(input$var_bar)) +
       ggtitle(input$titre_bar)
-=======
-      labs(x = "Music genre",y = "Prevalence") +
-      ggtitle(input$titre_bar)+ labs(fill = Vars2)
->>>>>>> e0a0c05b758a73e7aca30417241dded8e8ca9014
+
     
   })
   
@@ -153,8 +147,7 @@ shinyServer(function(input, output) {
   
   output$FAMD_details = renderText({paste(read_file("Data/FAMD_details.txt"))})
   
-<<<<<<< HEAD
-=======
+
      # Split train test
     
     musique_train <- reactive(subset({musique %>% dplyr::sample_frac(input$TrainTest/100)}))
@@ -311,7 +304,7 @@ shinyServer(function(input, output) {
     output$graph_res <- renderText({"Repartition of the difference between prediction and actual value of popularity"})
     
     output$summary <- renderText({"Summary of the model selected on the panel on the right. Do not forget to update the view to have the information. "})
->>>>>>> e0a0c05b758a73e7aca30417241dded8e8ca9014
+
   
   # 5e onglet : prediction with linear regression model ------
   

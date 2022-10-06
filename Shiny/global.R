@@ -13,7 +13,7 @@ library(ggplot2)
 library(FactoMineR)
 library(plotly)
 library(rAmCharts)
-library(readr) 
+library(readr)
 library(shiny)
 
 

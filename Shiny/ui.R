@@ -65,7 +65,20 @@ shinyUI(fluidPage(
                                                     text-align: justified;
                                                     }"
                                )
-                               )
+                               
+                               #titlePanel("Bibliography"),
+                               ),
+                               br(),
+                               a(href="https://www.midiaresearch.com/blog/music-subscriber-market-shares-q2-2021", 
+                                 target="_blank",
+                                 "Music suscriber market shares Q2 2021 - Midia Research Article"),
+                               br(),
+                               a(href="https://www.youtube.com/watch?v=O_2oDXw9Rps&ab_channel=FullStackCreative", 
+                                 target="_blank",
+                                 "How the Spotify Algorithm actually works - Youtube video")
+                               
+                               
+                        
                                
                                
                                

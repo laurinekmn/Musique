@@ -346,7 +346,8 @@ shinyServer(function(input, output) {
                                  buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, 
                                  lengthMenu = c(20, 100, 1000, nrow(musique)), 
                                  #scrollY = 300, 
-                                 scrollCollapse = TRUE
+                                 scrollCollapse = TRUE 
+                                
                   )) %>% DT::formatStyle(
                     'residuals',
                     backgroundColor = styleInterval(c(-20, -10, 10, 20), c("red","orange", 'green', 'orange', "red"))

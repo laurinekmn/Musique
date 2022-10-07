@@ -68,7 +68,7 @@ shinyServer(function(input, output) {
   
   titre_scatter <- eventReactive(input$goButton2, {input$titre_scat})
   output$scatterplot <- renderPlotly({
-    
+
     musique_sample <- musique_sample()
     ggplot(musique_sample, 
            aes(x = musique_sample[, var_scat_x()], y = musique_sample[, var_scat_y()], 
@@ -261,7 +261,6 @@ shinyServer(function(input, output) {
     } 
   )
   
-  # Description onglets FAMD
   output$graphAFMD = renderText("Graphic of the AFMD with temp, mode, key, loudness, liveness, instrumentalness, speechiness, acousticness and duration as active variables. The music are colored according to the variable you choose on the side.You need to update the view to have the graphic.")
   output$eigenvalues = renderText({paste("Eigenvalues of the FAMD. See Details tab to learn more about the FAMD tuning.")})
   output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})

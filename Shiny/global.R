@@ -1,5 +1,4 @@
 
-
 ######################################
 # Packages 
 ######################################
@@ -12,7 +11,7 @@ library(dplyr)
 library(tidyverse)
 library(ggplot2)
 library(FactoMineR)
-library(plotly)
+library(plotly) 
 library(rAmCharts)
 library(readr)
 library(shiny)
@@ -26,6 +25,7 @@ music <- fread("Data/musique.csv", sep=";", dec=".")
 
 
 dim0 <- dim(music)
+
 
 ## FEATURES CLASS
 
@@ -43,19 +43,19 @@ music$acousticness = as.numeric(music$acousticness)
 music$instrumentalness = as.numeric(music$instrumentalness)
 music$tempo=as.numeric(music$tempo)
 
-## CLEANING 
+## CLEANING
 
 music <- na.omit(music) # drop rows with NAs
 music <- music[which(music$duration_ms>0)] # keep rows with positive durations_ms
-music <- music[which(artist_name!="empty_field")] # remove rows 
-music <- droplevels(music) # droplevels 
+music <- music[which(artist_name!="empty_field")] # remove rows
+music <- droplevels(music) # droplevels
 
-# remove duplicated lines with different popularity grades 
+# remove duplicated lines with different popularity grades
 # we choose to keep the highest popularity grade
 
 options(dplyr.summarise.inform = FALSE)
 music <- music %>% dplyr::group_by(artist_name,track_name) %>%
-  dplyr::summarise(instance_id = instance_id[which.max(popularity)],popularity = max(popularity)) %>% 
+  dplyr::summarise(instance_id = instance_id[which.max(popularity)],popularity = max(popularity)) %>%
   dplyr::inner_join(music, music2, by = "instance_id", copy=FALSE, suffix = c("","."))
 
 
@@ -64,7 +64,6 @@ musique <- music[,-(5:7)]
 
 
 dim1 <- dim(musique)
-
 
 ## CSV file with info about dataset features
 
@@ -77,12 +76,10 @@ subset <- musique %>%
   sample_frac(size = 0.10, replace = FALSE)
 
 
-
-
-
 ######################################
 # Functions
 ######################################
+
 
 # returns the id of a song when given the name of the song and of the artist
 song_id <- function(track, artist){
@@ -110,5 +107,3 @@ eucl_dist <- function(id1, id2, coord.tmp){
   
   return(dist)
 }
-
-

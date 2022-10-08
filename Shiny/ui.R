@@ -63,8 +63,7 @@ shinyUI(fluidPage(
                                                     text-align: justified;
                                                     }"
                                )
-                               
-                               #titlePanel("Bibliography"),
+                              
                                ),
                                br(),
                                a(href="https://www.midiaresearch.com/blog/music-subscriber-market-shares-q2-2021", 
@@ -335,7 +334,7 @@ shinyUI(fluidPage(
                                             textInput(inputId = "titre_bar", label = "Main title:", value = "Barchart"),
                                             
                                             # selection des variables
-                                            radioButtons(inputId = "var_bar", label = "Barchart colored by: ", choices = colnames(musique)[c(10,13)]),
+                                            radioButtons(inputId = "var_bar", label = "Color by: ", choices = colnames(musique)[c(10,13)]),
                                             
                                             # input pour la couleur
                                             radioButtons(inputId = "col_bar", label = "Colour:", choices = c("magma","inferno","plasma","viridis","cividis"))
@@ -369,13 +368,20 @@ shinyUI(fluidPage(
                         column(width = 3, 
                                wellPanel(
                                  titlePanel("FAMD settings"), 
-                                 print("First graph"),
+                                 
+                                 print("1st graph"),
                                  textInput(inputId = "FAMD1_title", label = "Graph title", value = "Map of the individuals (FAMD)"), 
                                  radioButtons(inputId = "colorFAMD1", label = "Color by", choices = c("music_genre", "key", "mode")),
+                                 
                                  print("2nd graph"),
                                  textInput(inputId = "FAMD2_title", label = "Graph title", value = "Features contribution"), 
+                                
                                  print("3rd graph"),
                                  textInput(inputId = "FAMD3_title", label = "Graph title", value = "Correlation circle"), 
+                                 
+                                 # select type file
+                                 radioButtons(inputId = "type_down", label = "Select the file type for the download", choices = list("jpeg","png", "pdf")),
+                                 
                                  actionButton("goButton3", "Update view", class = "btn-success", icon("refresh"))
                                  
                                  
@@ -395,14 +401,21 @@ shinyUI(fluidPage(
                                                    br(),
                                                    
                                                    plotOutput(outputId = "FAMD1"),
+                                                   uiOutput("get_the_item1"),
+                                                   tags$style(type="text/css", "#downFAMD1 {background-color:white;color: black;font-family: Arial}"),
                                                    br(),
+                                                   
                                                    fluidRow(
                                                      column(width = 6, 
-                                                            plotOutput(outputId = "FAMD2") 
+                                                            plotOutput(outputId = "FAMD2"),
+                                                            tags$style(type="text/css", "#downFAMD2 {background-color:white;color: black;font-family: Arial}"),
+                                                            uiOutput("get_the_item2"),
                                                             
                                                      ),
                                                      column(width = 6, 
-                                                            plotOutput(outputId = "FAMD3")
+                                                            plotOutput(outputId = "FAMD3"),
+                                                            tags$style(type="text/css", "#downFAMD3 {background-color:white;color: black;font-family: Arial}"),
+                                                            uiOutput("get_the_item3"),
                                                      ))
                                                    
                                                    

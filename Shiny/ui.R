@@ -587,16 +587,6 @@ shinyUI(fluidPage(
                                                    ),
                                                    br(),
                                                    
-                                                   selectInput(
-                                                     inputId = "model_utilise",
-                                                     label = "Choose your model",
-                                                     choices = c("Your variables", "Best model variables"),
-                                                     selected = NULL,
-                                                     multiple = FALSE,
-                                                     selectize = TRUE,
-                                                     width = NULL,
-                                                     size = NULL
-                                                   ),
                                                    
                                                    fluidRow(
                                                      # numericInput("Ac",
@@ -608,9 +598,9 @@ shinyUI(fluidPage(
                                                      #input.Ac = NA
                                                      
 
-                                                     conditionalPanel(
-                                                       "input.model_utilise =='Your variables'",
-                                                       
+                                                     # conditionalPanel(
+                                                     #   "input.model_utilise =='Your variables'",
+                                                     #   
                                                        conditionalPanel(
                                                          "input.vars_quanti.indexOf('acousticness') >= 0",
                                                          sliderInput(
@@ -761,146 +751,147 @@ shinyUI(fluidPage(
                                                            width = NULL,
                                                            size = NULL
                                                          )
-                                                       ),
-                                                       br(),
-                                                       textOutput("prediction")
+                                                       )
                                                        
                                                      ),
+                                                                                                     br(),
+                                                   textOutput("prediction"),
+                                                   br()
 
                                                      
-                                                     conditionalPanel(
-                                                       "input.model_utilise =='Best model variables'",
-                                                       
-                                                       sliderInput(
-                                                         "Nb_vars",
-                                                         label = ("Number step in stepAIC"),
-                                                         min = 1,
-                                                         max = 30,
-                                                         value = 1
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Ac2",
-                                                         label = ("Acousticness"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "En2",
-                                                         label = ("Energy"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Ins2",
-                                                         label = ("Instrumentalness"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Dan2",
-                                                         label = ("Danceability"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Lou2",
-                                                         label = ("Loudness"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Live2",
-                                                         label = ("Liveness"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Spee2",
-                                                         label = ("Speechiness"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Val2",
-                                                         label = ("Valence"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Tempo2",
-                                                         label = ("Tempo"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       sliderInput(
-                                                         "Dur2",
-                                                         label = ("Duration_ms"),
-                                                         min = 0,
-                                                         max = 1,
-                                                         value = 0.5
-                                                       ),
-                                                       
-                                                       selectInput(
-                                                         inputId = "Genre2",
-                                                         label = "Music genre",
-                                                         choices = levels(musique$music_genre)[-1],
-                                                         selected = NULL,
-                                                         multiple = FALSE,
-                                                         selectize = TRUE,
-                                                         width = NULL,
-                                                         size = NULL
-                                                       ),
-                                                       
-                                                       selectInput(
-                                                         inputId = "Key2",
-                                                         label = "Key",
-                                                         choices = levels(musique$key),
-                                                         selected = "A",
-                                                         multiple = FALSE,
-                                                         selectize = TRUE,
-                                                         width = NULL,
-                                                         size = NULL
-                                                       ),
-                                                       
-                                                       selectInput(
-                                                         inputId = "mode2",
-                                                         label = "Mode",
-                                                         choices = levels(musique$mode),
-                                                         selected = "Major",
-                                                         multiple = FALSE,
-                                                         selectize = TRUE,
-                                                         width = NULL,
-                                                         size = NULL
-                                                       ),
-                                                       br(),
-                                                       #verbatimTextOutput("test"),
-                                                       textOutput("predi")
-                                                       
-                                                       
-                                                     )
-                                                     
-                                                     
-                                                     
-                                                   ),
+                                                   #   conditionalPanel(
+                                                   #     "input.model_utilise =='Best model variables'",
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Nb_vars",
+                                                   #       label = ("Number step in stepAIC"),
+                                                   #       min = 1,
+                                                   #       max = 30,
+                                                   #       value = 1
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Ac2",
+                                                   #       label = ("Acousticness"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "En2",
+                                                   #       label = ("Energy"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Ins2",
+                                                   #       label = ("Instrumentalness"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Dan2",
+                                                   #       label = ("Danceability"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Lou2",
+                                                   #       label = ("Loudness"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Live2",
+                                                   #       label = ("Liveness"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Spee2",
+                                                   #       label = ("Speechiness"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Val2",
+                                                   #       label = ("Valence"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Tempo2",
+                                                   #       label = ("Tempo"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     sliderInput(
+                                                   #       "Dur2",
+                                                   #       label = ("Duration_ms"),
+                                                   #       min = 0,
+                                                   #       max = 1,
+                                                   #       value = 0.5
+                                                   #     ),
+                                                   #     
+                                                   #     selectInput(
+                                                   #       inputId = "Genre2",
+                                                   #       label = "Music genre",
+                                                   #       choices = levels(musique$music_genre)[-1],
+                                                   #       selected = NULL,
+                                                   #       multiple = FALSE,
+                                                   #       selectize = TRUE,
+                                                   #       width = NULL,
+                                                   #       size = NULL
+                                                   #     ),
+                                                   #     
+                                                   #     selectInput(
+                                                   #       inputId = "Key2",
+                                                   #       label = "Key",
+                                                   #       choices = levels(musique$key),
+                                                   #       selected = "A",
+                                                   #       multiple = FALSE,
+                                                   #       selectize = TRUE,
+                                                   #       width = NULL,
+                                                   #       size = NULL
+                                                   #     ),
+                                                   #     
+                                                   #     selectInput(
+                                                   #       inputId = "mode2",
+                                                   #       label = "Mode",
+                                                   #       choices = levels(musique$mode),
+                                                   #       selected = "Major",
+                                                   #       multiple = FALSE,
+                                                   #       selectize = TRUE,
+                                                   #       width = NULL,
+                                                   #       size = NULL
+                                                   #     ),
+                                                   #     br(),
+                                                   #     #verbatimTextOutput("test"),
+                                                   #     textOutput("predi")
+                                                   #     
+                                                   #     
+                                                   #   )
+                                                   #   
+                                                   #   
+                                                   #   
+                                                   # ),
                                                    #submitButton("Update View", icon("refresh")),
                                                    
                                                    

@@ -141,6 +141,8 @@ shinyServer(function(input, output) {
   
   color <- eventReactive(input$goButton3, {input$colorFAMD1})
   titre <- eventReactive(input$goButton3, {input$FAMD1_title})
+  
+  
   output$FAMD1 <- renderPlot({
     input$goButton3
     #input$updatevisu
@@ -188,7 +190,7 @@ shinyServer(function(input, output) {
   # RMSE
   output$rmse <- renderText({
     input$goButton
-    paste("RMSE =",round(MLmetrics::RMSE(predict(model()), musique_test()$popularity),4)) 
+    paste("RMSE =",round(MLmetrics::RMSE(predict(model()), musique_test()$popularity),2)) 
   })
   
   # Datatable
@@ -348,7 +350,7 @@ shinyServer(function(input, output) {
   # RMSE
   output$rmse <- renderText({
     input$goButton
-    paste("RMSE =",MLmetrics::RMSE(predict(model()), musique_test()$popularity)) # ajouter au shiny
+    paste("RMSE =",round(MLmetrics::RMSE(predict(model()), musique_test()$popularity),2)) # ajouter au shiny
   })
   
   # Datatable

@@ -84,9 +84,31 @@ subset <- musique %>%
 # Functions
 ######################################
 
+# returns the id of a song when given the name of the song and of the artist
+song_id <- function(track, artist){
+  S = subset[subset$artist_name == artist,]
+  S = subset[subset$track_name== track,]
+  S <- as.data.frame(S)
+  id = as.character(S[1,3])
+  
+  return(id)
+}
 
 
-
-
+# returns euclidian distance between two songs
+eucl_dist <- function(id1, id2){
+  c1 <- coord.tmp[which(coord.tmp$id == id1),]
+  c1[2:5] <- as.numeric(c1[2:5])
+  c2 <- coord.tmp[which(coord.tmp$id == id2),]
+  c2[2:5] <- as.numeric(c2[2:5])
+  dist <- sqrt(
+    (c2$Dim.1-c1$Dim.1)^2
+    +(c2$Dim.2-c1$Dim.2)^2
+    +(c2$Dim.3-c1$Dim.3)^2
+    +(c2$Dim.4-c1$Dim.4)^2
+  )
+  
+  return(dist)
+}
 
 

@@ -132,9 +132,32 @@ shinyServer(function(input, output) {
   output$choose_song <- renderUI({
     selectInput(inputId = "song_to_reco", label = "Choose the song to iniate a recommendation", choices = c(subset[which (subset$artist_name %in% input$artist_reco),]$track_name))
   })
-  
+
   output$your_song <- renderText({paste("Your choice: ", input$song_to_reco, "by", input$artist_reco)})
   output$song_recos_subtitle <- renderText("Our Music Recommendations")
+  
+  # algo de recommendations musicales 
+
+  # coord.tmp <- data.frame(cbind(id = as.character(subset$instance_id), res.FAMD$ind$coord))
+  # id <- song_id(track = input$song_to_reco, artist = input$artist_reco)
+  # 
+  
+  #   # calcul des distances
+  # dist_vec <- c()
+  # 
+  # for (k in coord.tmp$id){
+  #   dist_vec <- c(dist_vec, eucl_dist(id, k))
+  # } 
+  # coord.tmp = cbind(coord.tmp, dist = dist_vec)
+  # head(coord.tmp)
+  # 
+  # coord.tmp = arrange(coord.tmp, dist)
+  # head(coord.tmp)
+  # 
+  # reco10 = coord.tmp[2:11,]
+  # 
+  # output$finalrecos <- renderDataTable({data.table(reco10)})
+  # 
   
   ## FAMD Details tab 
   

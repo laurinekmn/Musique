@@ -394,8 +394,8 @@ shinyUI(fluidPage(
                                                    ),
                                                    br(),
                                                    selectInput(inputId = "genre_reco", label = "Filter by genre", choices = c(subset$music_genre), multiple = TRUE),
-                                                   uiOutput("artist_genre"),
-                                                   uiOutput("choose_song"),
+                                                   uiOutput("artist_genre"), # artist choice
+                                                   uiOutput("choose_song"), #song choice
                                                    br(),
                                                    textOutput("your_song"), 
                                                    tags$head(tags$style("#your_song{color : black;
@@ -413,7 +413,9 @@ shinyUI(fluidPage(
                                                     }"
                                                    )
                                                    )
-                                                   
+                                                   # br(), 
+                                                   # dataTableOutput("finalrecos")
+                                                   # 
                                                    
                                                    ),
                                           tabPanel("Details", 

@@ -97,11 +97,11 @@ shinyServer(function(input, output) {
   
   # FAMD & Recommendations
   
-  
+
   #FAMD on subset
-  res.FAMD <- FAMD(subset[,-c(1:3,16)], 
-                   ncp = 4, 
-                   graph = FALSE, 
+  res.FAMD <- FAMD(subset[,-c(1:3,16)],
+                   ncp = 4,
+                   graph = FALSE,
                    sup.var = c("danceability", "energy", "popularity", "valence", "music_genre")
   )
   
@@ -126,39 +126,80 @@ shinyServer(function(input, output) {
   ## Recommendation tab
   
   output$artist_genre <- renderUI({
-    selectInput(inputId = "artist_reco", label = "Filter by artist", choices = c(subset[which (subset$music_genre %in% input$genre_reco),]$artist_name))
+    selectInput(inputId = "artist_reco", 
+                label = "Filter by artist", 
+                choices = c(subset[which (subset$music_genre %in% input$genre_reco),]$artist_name))
   })
   
   output$choose_song <- renderUI({
-    selectInput(inputId = "song_to_reco", label = "Choose the song to iniate a recommendation", choices = c(subset[which (subset$artist_name %in% input$artist_reco),]$track_name))
+    selectInput(inputId = "song_to_reco", 
+                label = "Choose the song to iniate a recommendation", 
+                choices = c(subset[which (subset$artist_name %in% input$artist_reco),]$track_name))
   })
 
   output$your_song <- renderText({paste("Your choice: ", input$song_to_reco, "by", input$artist_reco)})
-  output$song_recos_subtitle <- renderText("Our Music Recommendations")
+  output$song_recos_subtitle <- renderText("Our Music Recommendations")   
   
   # algo de recommendations musicales 
+  # coord.tmp <- reactive({
+  #   data.frame(cbind(id = as.character(subset$instance_id), res.FAMD$ind$coord))
+  # })  
+  
+  
+  
+  
+  reco10 <- reactive({
+    coord.tmp <- data.frame(cbind(id = as.character(subset$instance_id),
+    res.FAMD$ind$coord))
 
-  # coord.tmp <- data.frame(cbind(id = as.character(subset$instance_id), res.FAMD$ind$coord))
-  # id <- song_id(track = input$song_to_reco, artist = input$artist_reco)
-  # 
+    coord.tmp <- cbind(coord.tmp,
+                       track_name = subset$track_name, 
+                       artist_name = subset$artist_name,
+                       genre = subset$music_genre)
+    
+    id <- song_id(track = input$song_to_reco, artist = input$artist_reco)
+    
+    dist_vec <- c()
+    for (k in coord.tmp$id){
+      dist_vec <- c(dist_vec, eucl_dist(id, k, coord.tmp))
+    }
+    
+    coord.tmp <- cbind(coord.tmp, dist = dist_vec)
+    coord.tmp = arrange(coord.tmp, dist)
+    reco10 = coord.tmp[2:(input$nb_recos+1),-(2:5)]
+    
+    
+  })
+
+
   
-  #   # calcul des distances
-  # dist_vec <- c()
-  # 
-  # for (k in coord.tmp$id){
-  #   dist_vec <- c(dist_vec, eucl_dist(id, k))
-  # } 
-  # coord.tmp = cbind(coord.tmp, dist = dist_vec)
-  # head(coord.tmp)
-  # 
-  # coord.tmp = arrange(coord.tmp, dist)
-  # head(coord.tmp)
-  # 
-  # reco10 = coord.tmp[2:11,]
-  # 
-  # output$finalrecos <- renderDataTable({data.table(reco10)})
-  # 
+
+    # output$test <- renderPrint({reco10()})
+  # output$finalrecos <- renderDataTable({
+  #   # reco10 = coord.tmp[2:11,]
+  #     data.table(reco10()
+  #                )
+    
   
+  
+  
+  output$finalrecos <- renderDataTable({
+    # reco10 = coord.tmp[2:11,]
+    datatable(reco10(),
+              rownames = F,
+              extensions = c('Buttons', 'Responsive'), 
+              options = list(columnDefs = list(list(className = 'dt-center', targets = "_all")), dom = 'Blfrtp', 
+                             buttons = c('copy', 'csv', 'excel', 'print'), searching = FALSE, 
+                             # lengthMenu = c(20, 100, 1000, nrow(musique)),
+                             #scrollY = 300, 
+                             scrollCollapse = TRUE
+              ))
+    
+  
+  
+    })
+  
+
   ## FAMD Details tab 
   
   output$FAMD_details = renderText({paste(read_file("Data/FAMD_details.txt"))})

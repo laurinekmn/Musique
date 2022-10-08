@@ -96,7 +96,7 @@ song_id <- function(track, artist){
 
 
 # returns euclidian distance between two songs
-eucl_dist <- function(id1, id2){
+eucl_dist <- function(id1, id2, coord.tmp){
   c1 <- coord.tmp[which(coord.tmp$id == id1),]
   c1[2:5] <- as.numeric(c1[2:5])
   c2 <- coord.tmp[which(coord.tmp$id == id2),]

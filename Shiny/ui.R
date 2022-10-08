@@ -412,10 +412,19 @@ shinyUI(fluidPage(
                                                     font-style: bold;
                                                     }"
                                                    )
-                                                   )
-                                                   # br(), 
-                                                   # dataTableOutput("finalrecos")
-                                                   # 
+                                                   ),
+                                                   br(),
+                                                   sliderInput(
+                                                     "nb_recos",
+                                                     label = ("Number of recommendations"),
+                                                     min = 1,
+                                                     max = 25,
+                                                     value = 10
+                                                   ),
+                                                   # verbatimTextOutput("test")
+                                                   br(),
+                                                   dataTableOutput("finalrecos")
+
                                                    
                                                    ),
                                           tabPanel("Details", 

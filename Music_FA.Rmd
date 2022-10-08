@@ -241,7 +241,7 @@ song_id <- function(track, artist){
 
 coord.tmp <- data.frame(cbind(id = as.character(subset$instance_id), res.FAMD$ind$coord))
 
-eucl_dist("68977","33657")
+# eucl_dist("68977","33657")
 
 # returns euclidian distance between two songs
 eucl_dist <- function(id1, id2){
@@ -273,6 +273,19 @@ head(coord.tmp)
 
 reco10 = coord.tmp[2:11,]
 
+# id, track name, artist name, genre
+res = data.frame(reco10[-(2:5)]) 
+L = c()
+for (i in 1:nrow(res)){
+  L = c(L, res$id[i])
+}
+L
+subset[rownames(res),]
+
+S <- subset[subset$instance_id %in% L,]
+
+        # data.table(reco10)
+
 
 ```
 
@@ -297,6 +310,10 @@ dt.tmp[,distAF = eucl_dist(song_to_reco_id, dt.tmp$id)]
 
 
 print(song_id(subset$track_name[1], subset$artist_name[1]))
+
+
+    a = subset[which(subset$music_genre %in% list("Country", "Classical")),]$artist_name
+class(list(a))
 
 ```
 

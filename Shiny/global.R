@@ -69,10 +69,41 @@ dim1 <- dim(musique)
 
 tabfeat <- fread("Data/features_info.csv", sep=";")
 
-best_model_prediction <- lm(popularity ~ acousticness + danceability + duration_ms + energy + instrumentalness + liveness + loudness + speechiness + tempo + valence + acousticness:music_genre + danceability:music_genre + duration_ms:music_genre + energy:music_genre + instrumentalness:music_genre + liveness:music_genre + loudness:music_genre + speechiness:music_genre + tempo:music_genre + valence:music_genre, data = musique)
+## Subset: 10% of each music_genre  (used in FAMD tab) 
+
+subset <- musique %>% 
+  group_by(music_genre) %>%
+  sample_frac(size = 0.10, replace = FALSE)
 
 
 ######################################
 # Functions
 ######################################
 
+
+# returns the id of a song when given the name of the song and of the artist
+song_id <- function(track, artist){
+  S = subset[subset$artist_name == artist,]
+  S = subset[subset$track_name== track,]
+  S <- as.data.frame(S)
+  id = as.character(S[1,3])
+  
+  return(id)
+}
+
+
+# returns euclidian distance between two songs
+eucl_dist <- function(id1, id2, coord.tmp){
+  c1 <- coord.tmp[which(coord.tmp$id == id1),]
+  c1[2:5] <- as.numeric(c1[2:5])
+  c2 <- coord.tmp[which(coord.tmp$id == id2),]
+  c2[2:5] <- as.numeric(c2[2:5])
+  dist <- sqrt(
+    (c2$Dim.1-c1$Dim.1)^2
+    +(c2$Dim.2-c1$Dim.2)^2
+    +(c2$Dim.3-c1$Dim.3)^2
+    +(c2$Dim.4-c1$Dim.4)^2
+  )
+  
+  return(dist)
+}

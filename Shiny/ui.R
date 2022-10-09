@@ -15,7 +15,6 @@ shinyUI(fluidPage(
                    fg = "Teal"),
   
   # Application title
-  #titlePanel("Musique"),
   navbarPage(textOutput('allthatjazz'),
              tags$head(tags$style("#allthatjazz{color : black;
                                                     font-size: 16px;
@@ -63,22 +62,48 @@ shinyUI(fluidPage(
                                                     text-align: justified;
                                                     }"
                                )
-                              
+                               
                                ),
                                br(),
+                               textOutput("HomePara2"),
+                               tags$head(tags$style("#HomePara2{color: black;
+                                                    font-size: 18px;
+                                                    font-family: Arial,serif;
+                                                    font-style: normal;
+                                                    text-align: justified;
+                                                    }"
+                               )
+                               
+                               ),
+                               br(),
+                               tags$ul(
+                                 tags$li("To recommend relevant songs from a starting song"
+                                 ),
+                                 tags$li("For an artist, to know if their song will be a hit by predict popularity from different variables"
+                                 )
+                                 
+                                 
+                               ),
+                               br(),
+                               br(),
+                               textOutput("HomeSubt"),
+                               tags$head(tags$style("#HomeSubt{color : black;
+                                                    font-size: 22px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                               )
+                               ),
                                a(href="https://www.midiaresearch.com/blog/music-subscriber-market-shares-q2-2021", 
                                  target="_blank",
                                  "Music suscriber market shares Q2 2021 - Midia Research Article"),
                                br(),
                                a(href="https://www.youtube.com/watch?v=O_2oDXw9Rps&ab_channel=FullStackCreative", 
                                  target="_blank",
-                                 "How the Spotify Algorithm actually works - Youtube video")
-                               
-                               
-                               
-                               
-                               
-                               
+                                 "How the Spotify Algorithm actually works - Youtube video"),
+                               br(),
+                               br()
+ 
                         ), 
                         column(width = 2)
                         
@@ -135,13 +160,6 @@ shinyUI(fluidPage(
                                                     }")),
                                tags$ul(
                                  tags$li("Rows with NAs were removed",
-                                         # tags$style("{color: black;
-                                         #            font-size: 18px;
-                                         #            font-family: Arial,sans-serif;
-                                         #            font-style: normal;
-                                         #            }"
-                                         #   
-                                         # )
                                  ),
                                  tags$li("Mode, key, danceability, energy, popularity and valence were converted as factor"),
                                  tags$li("Other features were considered as numeric"), 
@@ -165,7 +183,7 @@ shinyUI(fluidPage(
                                                     }"
                                )
                                ),
-                              br(),
+                               br(),
                                dataTableOutput("features_info"), 
                                br(),
                                textOutput('DataTitle4'),
@@ -267,7 +285,7 @@ shinyUI(fluidPage(
                                                    
                                                    amChartsOutput("boxplot")
                                           )
-                                          #)
+                                          
                                    )
                                  )),
                         
@@ -294,7 +312,7 @@ shinyUI(fluidPage(
                                             
                                             actionButton("goButton2", "Update view", class = "btn-success", icon("refresh"))
                                             
-
+                                            
                                           )
                                    ), 
                                    # deuxieme colonne
@@ -369,20 +387,20 @@ shinyUI(fluidPage(
                                wellPanel(
                                  titlePanel("FAMD settings"), 
                                  
-                                 print("1st graph"),
-                                 textInput(inputId = "FAMD1_title", label = "Graph title", value = "Map of the individuals (FAMD)"), 
+                                 # print("1st graph"),
+                                 textInput(inputId = "FAMD1_title", label = "1. Map of the individuals - title", value = "Map of the individuals (FAMD)"), 
                                  radioButtons(inputId = "colorFAMD1", label = "Color by", choices = c("music_genre", "key", "mode")),
                                  
-                                 print("2nd graph"),
-                                 textInput(inputId = "FAMD2_title", label = "Graph title", value = "Features contribution"), 
-                                
-                                 print("3rd graph"),
-                                 textInput(inputId = "FAMD3_title", label = "Graph title", value = "Correlation circle"), 
+                                 # print("2nd graph"),
+                                 textInput(inputId = "FAMD2_title", label = "2. Features contribution - title", value = "Features contribution"), 
+                                 
+                                 # print("3rd graph"),
+                                 textInput(inputId = "FAMD3_title", label = "2. Correlation circle - title", value = "Correlation circle"), 
                                  
                                  # select type file
                                  radioButtons(inputId = "type_down", label = "Select the file type for the download", choices = list("jpeg","png", "pdf")),
                                  
-                                 actionButton("goButton3", "Update view", class = "btn-success", icon("refresh"))
+                                 actionButton("goButton3", "Update", class = "btn-success", icon("refresh"))
                                  
                                  
                                )
@@ -456,14 +474,69 @@ shinyUI(fluidPage(
                                                     font-style: normal;
                                                     }")
                                                    ),
+                                                   br(),
+                                                   selectInput(inputId = "genre_reco", label = "Filter by genre", choices = c(subset$music_genre), multiple = TRUE),
+                                                   uiOutput("artist_genre"), # artist choice
+                                                   uiOutput("choose_song"), #song choice
+                                                   br(),
+                                                   textOutput("your_song"), 
+                                                   tags$head(tags$style("#your_song{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ), 
+                                                   br(), 
+                                                   textOutput("song_recos_subtitle"),
+                                                   tags$head(tags$style("#song_recos_subtitle{color : 1d3624;
+                                                    font-size: 28px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                                                   )
+                                                   ),
+                                                   br(),
+                                                   sliderInput(
+                                                     "nb_recos",
+                                                     label = ("Number of recommendations"),
+                                                     min = 1,
+                                                     max = 25,
+                                                     value = 10
+                                                   ),
+                                                   # verbatimTextOutput("test")
+                                                   br(),
+                                                   dataTableOutput("finalrecos"),
                                                    br()
-                                                   # selectInput(inputId = "song_reco", label = "The song to generate recommendations from...", choices = names(subset_famd[,"track_name"]) )
                                                    
                                                    
                                           ),
                                           tabPanel("Details", 
-                                                   textOutput("FAMD_details"), 
-                                                   tags$head(tags$style("#FAMD_details{color : black;
+                                                   textOutput("FAMD_details0"), 
+                                                   tags$head(tags$style("#FAMD_details0{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   textOutput("FAMD_details1"), 
+                                                   tags$head(tags$style("#FAMD_details1{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   textOutput("FAMD_details2"), 
+                                                   tags$head(tags$style("#FAMD_details2{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   textOutput("FAMD_details3"), 
+                                                   tags$head(tags$style("#FAMD_details3{color : black;
                                                     font-size: 16px;
                                                     font-family: Arial,sans-serif;
                                                     font-style: normal;
@@ -517,8 +590,6 @@ shinyUI(fluidPage(
                                    max = 99,
                                    value = 70
                                  ),
-                                 
-                                 #submitButton("Update View", icon("refresh"))
                                  actionButton("goButton", "Update view", class = "btn-success", icon("refresh"))
                                )
                         ),
@@ -574,7 +645,8 @@ shinyUI(fluidPage(
                                                    tags$li("Orange : abs(popularity) < 20"),
                                                    tags$li("Red : abs(popularity) > 20"),
                                                    br(),
-                                                   DT::dataTableOutput("DataTable")
+                                                   DT::dataTableOutput("DataTable"),
+                                                   br()
                                           ),
                                           
                                           tabPanel("Graph residual",
@@ -602,317 +674,164 @@ shinyUI(fluidPage(
                                                    
                                                    
                                                    fluidRow(
-                                                     # numericInput("Ac",
-                                                     #              label="Acousticness",
-                                                     #              value = NA,
-                                                     #              min = 0,
-                                                     #              max = 1,
-                                                     #              step = NA),
-                                                     #input.Ac = NA
-                                                     
-
-                                                     # conditionalPanel(
-                                                     #   "input.model_utilise =='Your variables'",
-                                                     #   
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('acousticness') >= 0",
-                                                         sliderInput(
-                                                           "Ac",
-                                                           label = ("Acousticness"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('energy') >= 0",
-                                                         sliderInput(
-                                                           "En",
-                                                           label = ("Energy"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('instrumentalness') >= 0",
-                                                         sliderInput(
-                                                           "Ins",
-                                                           label = ("Instrumentalness"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('danceability') >= 0",
-                                                         sliderInput(
-                                                           "Dan",
-                                                           label = ("Danceability"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('loudness') >= 0",
-                                                         sliderInput(
-                                                           "Lou",
-                                                           label = ("Loudness"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('liveness') >= 0",
-                                                         sliderInput(
-                                                           "Live",
-                                                           label = ("Liveness"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('speechiness') >= 0",
-                                                         sliderInput(
-                                                           "Spee",
-                                                           label = ("Speechiness"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('valence') >= 0",
-                                                         sliderInput(
-                                                           "Val",
-                                                           label = ("Valence"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('valence') >= 0",
-                                                         sliderInput(
-                                                           "Tempo",
-                                                           label = ("Tempo"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quanti.indexOf('duration_ms') >= 0",
-                                                         sliderInput(
-                                                           "Dur",
-                                                           label = ("Duration_ms"),
-                                                           min = 0,
-                                                           max = 1,
-                                                           value = 0.5
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quali.indexOf('music_genre') >= 0",
-                                                         selectInput(
-                                                           inputId = "Genre",
-                                                           label = "Music genre",
-                                                           choices = levels(musique$music_genre)[-1],
-                                                           selected = NULL,
-                                                           multiple = FALSE,
-                                                           selectize = TRUE,
-                                                           width = NULL,
-                                                           size = NULL
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quali.indexOf('key') >= 0",
-                                                         selectInput(
-                                                           inputId = "Key",
-                                                           label = "Key",
-                                                           choices = levels(musique$key),
-                                                           selected = "A",
-                                                           multiple = FALSE,
-                                                           selectize = TRUE,
-                                                           width = NULL,
-                                                           size = NULL
-                                                         )
-                                                       ),
-                                                       
-                                                       conditionalPanel(
-                                                         "input.vars_quali.indexOf('mode') >= 0",
-                                                         selectInput(
-                                                           inputId = "mode",
-                                                           label = "Mode",
-                                                           choices = levels(musique$mode),
-                                                           selected = "Major",
-                                                           multiple = FALSE,
-                                                           selectize = TRUE,
-                                                           width = NULL,
-                                                           size = NULL
-                                                         )
+                                                  
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('acousticness') >= 0",
+                                                       sliderInput(
+                                                         "Ac",
+                                                         label = ("Acousticness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
                                                        )
-                                                       
                                                      ),
-                                                                                                     br(),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('energy') >= 0",
+                                                       sliderInput(
+                                                         "En",
+                                                         label = ("Energy"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('instrumentalness') >= 0",
+                                                       sliderInput(
+                                                         "Ins",
+                                                         label = ("Instrumentalness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('danceability') >= 0",
+                                                       sliderInput(
+                                                         "Dan",
+                                                         label = ("Danceability"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('loudness') >= 0",
+                                                       sliderInput(
+                                                         "Lou",
+                                                         label = ("Loudness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('liveness') >= 0",
+                                                       sliderInput(
+                                                         "Live",
+                                                         label = ("Liveness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('speechiness') >= 0",
+                                                       sliderInput(
+                                                         "Spee",
+                                                         label = ("Speechiness"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('valence') >= 0",
+                                                       sliderInput(
+                                                         "Val",
+                                                         label = ("Valence"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('valence') >= 0",
+                                                       sliderInput(
+                                                         "Tempo",
+                                                         label = ("Tempo"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quanti.indexOf('duration_ms') >= 0",
+                                                       sliderInput(
+                                                         "Dur",
+                                                         label = ("Duration_ms"),
+                                                         min = 0,
+                                                         max = 1,
+                                                         value = 0.5
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quali.indexOf('music_genre') >= 0",
+                                                       selectInput(
+                                                         inputId = "Genre",
+                                                         label = "Music genre",
+                                                         choices = levels(musique$music_genre)[-1],
+                                                         selected = NULL,
+                                                         multiple = FALSE,
+                                                         selectize = TRUE,
+                                                         width = NULL,
+                                                         size = NULL
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quali.indexOf('key') >= 0",
+                                                       selectInput(
+                                                         inputId = "Key",
+                                                         label = "Key",
+                                                         choices = levels(musique$key),
+                                                         selected = "A",
+                                                         multiple = FALSE,
+                                                         selectize = TRUE,
+                                                         width = NULL,
+                                                         size = NULL
+                                                       )
+                                                     ),
+                                                     
+                                                     conditionalPanel(
+                                                       "input.vars_quali.indexOf('mode') >= 0",
+                                                       selectInput(
+                                                         inputId = "mode",
+                                                         label = "Mode",
+                                                         choices = levels(musique$mode),
+                                                         selected = "Major",
+                                                         multiple = FALSE,
+                                                         selectize = TRUE,
+                                                         width = NULL,
+                                                         size = NULL
+                                                       )
+                                                     )
+                                                     
+                                                   ),
+                                                   br(),
                                                    textOutput("prediction"),
                                                    br()
-
-                                                     
-                                                   #   conditionalPanel(
-                                                   #     "input.model_utilise =='Best model variables'",
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Nb_vars",
-                                                   #       label = ("Number step in stepAIC"),
-                                                   #       min = 1,
-                                                   #       max = 30,
-                                                   #       value = 1
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Ac2",
-                                                   #       label = ("Acousticness"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "En2",
-                                                   #       label = ("Energy"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Ins2",
-                                                   #       label = ("Instrumentalness"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Dan2",
-                                                   #       label = ("Danceability"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Lou2",
-                                                   #       label = ("Loudness"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Live2",
-                                                   #       label = ("Liveness"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Spee2",
-                                                   #       label = ("Speechiness"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Val2",
-                                                   #       label = ("Valence"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Tempo2",
-                                                   #       label = ("Tempo"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     sliderInput(
-                                                   #       "Dur2",
-                                                   #       label = ("Duration_ms"),
-                                                   #       min = 0,
-                                                   #       max = 1,
-                                                   #       value = 0.5
-                                                   #     ),
-                                                   #     
-                                                   #     selectInput(
-                                                   #       inputId = "Genre2",
-                                                   #       label = "Music genre",
-                                                   #       choices = levels(musique$music_genre)[-1],
-                                                   #       selected = NULL,
-                                                   #       multiple = FALSE,
-                                                   #       selectize = TRUE,
-                                                   #       width = NULL,
-                                                   #       size = NULL
-                                                   #     ),
-                                                   #     
-                                                   #     selectInput(
-                                                   #       inputId = "Key2",
-                                                   #       label = "Key",
-                                                   #       choices = levels(musique$key),
-                                                   #       selected = "A",
-                                                   #       multiple = FALSE,
-                                                   #       selectize = TRUE,
-                                                   #       width = NULL,
-                                                   #       size = NULL
-                                                   #     ),
-                                                   #     
-                                                   #     selectInput(
-                                                   #       inputId = "mode2",
-                                                   #       label = "Mode",
-                                                   #       choices = levels(musique$mode),
-                                                   #       selected = "Major",
-                                                   #       multiple = FALSE,
-                                                   #       selectize = TRUE,
-                                                   #       width = NULL,
-                                                   #       size = NULL
-                                                   #     ),
-                                                   #     br(),
-                                                   #     #verbatimTextOutput("test"),
-                                                   #     textOutput("predi")
-                                                   #     
-                                                   #     
-                                                   #   )
-                                                   #   
-                                                   #   
-                                                   #   
-                                                   # ),
-                                                   #submitButton("Update View", icon("refresh")),
-                                                   
-                                                   
-                                                   
-                                                   
-                                                   #DT::dataTableOutput("data_pred")
-                                                   #DT::dataTableOutput("test")
-                                                   
+                                                
                                           )
                                           
                                           

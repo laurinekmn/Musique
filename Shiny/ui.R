@@ -73,14 +73,16 @@ shinyUI(fluidPage(
                                                     text-align: justified;
                                                     }"
                                )
-                               
+
                                ),
                                br(),
                                tags$ul(
                                  tags$li("To recommend relevant songs from a starting song"
+
                                  ),
                                  tags$li("For an artist, to know if their song will be a hit by predict popularity from different variables"
                                  )
+
                                  
                                  
                                ),
@@ -393,7 +395,7 @@ shinyUI(fluidPage(
                                  
                                  # print("2nd graph"),
                                  textInput(inputId = "FAMD2_title", label = "2. Features contribution - title", value = "Features contribution"), 
-                                 
+
                                  # print("3rd graph"),
                                  textInput(inputId = "FAMD3_title", label = "2. Correlation circle - title", value = "Correlation circle"), 
                                  
@@ -507,8 +509,7 @@ shinyUI(fluidPage(
                                                    br(),
                                                    dataTableOutput("finalrecos"),
                                                    br()
-                                                   
-                                                   
+                                           
                                           ),
                                           tabPanel("Details", 
                                                    textOutput("FAMD_details0"), 

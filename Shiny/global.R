@@ -106,4 +106,6 @@ eucl_dist <- function(id1, id2, coord.tmp){
   )
   
   return(dist)
+
 }
+

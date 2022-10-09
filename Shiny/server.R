@@ -20,7 +20,7 @@ shinyServer(function(input, output) {
   output$HomePara = renderText({paste(read_file("Data/home.txt"))})
   output$HomePara2 = renderText({"This app is about understanding what information we can get from a small dataset (on the scale of what is used by Spotify's algorithms for example) with fairly simple methods. The objectives were: "})
   output$HomeSubt = renderText({"References"})
-  
+
   # 2e onglet : dataset description (features explanation) -----
   
   # Data description text outputs
@@ -260,10 +260,10 @@ shinyServer(function(input, output) {
   output$eigenvalues = renderText({paste("Eigenvalues of the FAMD. See Details tab to learn more about the FAMD tuning.")})
   output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})
   output$recomdt = renderText({paste("In this tab, choose a song from the list and get recommended a few others that you might like as well. See Details tab to learn more about the FAMD tuning.")})
-  
+
   ## Recommendation tab
   
-  output$artist_genre <- renderUI({
+output$artist_genre <- renderUI({
     selectInput(inputId = "artist_reco", 
                 label = "Filter by artist", 
                 choices = c(subset[which (subset$music_genre %in% input$genre_reco),]$artist_name))

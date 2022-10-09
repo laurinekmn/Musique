@@ -1,0 +1,4 @@
+The variables used to measure distance between statistical individuals are the following : tempo, mode, key, loudness, liveness, instrumentalness, speechiness, acousticness and duration. 
+Other variables such as danceability or energy were constructed from several  above-mentionned others hence we decided to set them as supplementary variables. 
+As long as there are both quantitatives and qualitatives variables, we performed a Factor Analysis for Mixed Data (FAMD) using FAMD function (FactoMineR package). 
+

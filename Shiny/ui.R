@@ -369,20 +369,20 @@ shinyUI(fluidPage(
                                wellPanel(
                                  titlePanel("FAMD settings"), 
                                  
-                                 print("1st graph"),
-                                 textInput(inputId = "FAMD1_title", label = "Graph title", value = "Map of the individuals (FAMD)"), 
+                                 # print("1st graph"),
+                                 textInput(inputId = "FAMD1_title", label = "1. Map of the individuals - title", value = "Map of the individuals (FAMD)"), 
                                  radioButtons(inputId = "colorFAMD1", label = "Color by", choices = c("music_genre", "key", "mode")),
                                  
-                                 print("2nd graph"),
-                                 textInput(inputId = "FAMD2_title", label = "Graph title", value = "Features contribution"), 
+                                 # print("2nd graph"),
+                                 textInput(inputId = "FAMD2_title", label = "2. Features contribution - title", value = "Features contribution"), 
                                 
-                                 print("3rd graph"),
-                                 textInput(inputId = "FAMD3_title", label = "Graph title", value = "Correlation circle"), 
+                                 # print("3rd graph"),
+                                 textInput(inputId = "FAMD3_title", label = "2. Correlation circle - title", value = "Correlation circle"), 
                                  
                                  # select type file
                                  radioButtons(inputId = "type_down", label = "Select the file type for the download", choices = list("jpeg","png", "pdf")),
                                  
-                                 actionButton("goButton3", "Update view", class = "btn-success", icon("refresh"))
+                                 actionButton("goButton3", "Update", class = "btn-success", icon("refresh"))
                                  
                                  
                                )
@@ -492,8 +492,32 @@ shinyUI(fluidPage(
                                                    
                                           ),
                                           tabPanel("Details", 
-                                                   textOutput("FAMD_details"), 
-                                                   tags$head(tags$style("#FAMD_details{color : black;
+                                                   textOutput("FAMD_details0"), 
+                                                   tags$head(tags$style("#FAMD_details0{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   textOutput("FAMD_details1"), 
+                                                   tags$head(tags$style("#FAMD_details1{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   textOutput("FAMD_details2"), 
+                                                   tags$head(tags$style("#FAMD_details2{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   ),
+                                                   br(),
+                                                   textOutput("FAMD_details3"), 
+                                                   tags$head(tags$style("#FAMD_details3{color : black;
                                                     font-size: 16px;
                                                     font-family: Arial,sans-serif;
                                                     font-style: normal;

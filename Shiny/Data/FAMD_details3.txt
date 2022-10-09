@@ -1,0 +1,2 @@
+The recommendations are made by computing the Euclidean distance between the song that iniatiated the recommendation and all the others for 4 dimensions.
+The n recommendations correspond to the n songs closest to the initial song in the 4 dimensional space.   

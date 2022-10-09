@@ -119,7 +119,7 @@ shinyServer(function(input, output) {
   output$exp_hist <- renderText({"Choose the variable you want to represent and have a look at the distribution."})
   output$exp_box <- renderText({"Choose the variable you want to represent and have a look at the distribution in function of the music genre."})
   output$exp_scat <- renderText({"Do not forget to update the view to see the plot. 
-    REMEMBER: if you choose the same variable for both axes, you will obtain a right and correlation = 1."})
+    REMEMBER: if you choose the same variable for both axes, you will obtain a straight line and correlation = 1."})
   output$exp_bar <- renderText({"Representation of the music genre distribution according to key or mode (the two categorical variables of the dataset)."})
   
   
@@ -263,7 +263,7 @@ shinyServer(function(input, output) {
     } 
   )
   
-  output$graphAFMD = renderText("Graphic of the AFMD with temp, mode, key, loudness, liveness, instrumentalness, speechiness, acousticness and duration as active variables. The music are colored according to the variable you choose on the side.You need to update the view to have the graphic.")
+  output$graphAFMD = renderText("FAMD graphs with tempo, mode, key, loudness, liveness, instrumentalness, speechiness, acousticness and duration as active variables. The tracks on the first graph can be colored according to the variable. Make your choice on the side panel. IMPORTANT: You need to click \"update\" to see graphs in the first place or to update them.")
   output$eigenvalues = renderText({paste("Eigenvalues of the FAMD. See Details tab to learn more about the FAMD tuning.")})
   output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})
   output$recomdt = renderText({paste("In this tab, choose a song from the list and get recommended a few others that you might like as well. See Details tab to learn more about the FAMD tuning.")})
@@ -348,7 +348,10 @@ shinyServer(function(input, output) {
 
   ## FAMD Details tab 
 
-  output$FAMD_details = renderText({paste(read_file("Data/FAMD_details.txt"))})
+  output$FAMD_details0 = renderText({paste(read_file("Data/FAMD_details0.txt"))})
+  output$FAMD_details1 = renderText({paste(read_file("Data/FAMD_details1.txt"))})
+  output$FAMD_details2 = renderText({paste(read_file("Data/FAMD_details2.txt"))})
+  output$FAMD_details3 = renderText({paste(read_file("Data/FAMD_details3.txt"))})
   
   
   

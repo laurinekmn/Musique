@@ -66,6 +66,35 @@ shinyUI(fluidPage(
                               
                                ),
                                br(),
+                               textOutput("HomePara2"),
+                               tags$head(tags$style("#HomePara2{color: black;
+                                                    font-size: 18px;
+                                                    font-family: Arial,serif;
+                                                    font-style: normal;
+                                                    text-align: justified;
+                                                    }"
+                               )
+
+                               ),
+                               br(),
+                               tags$ul(
+                                 tags$li("To recommend relevant songs from a starting song"
+                                         ),
+                                 tags$li("For an artist, to know if their song will be a hit by predict popularity from different variables"
+                                         )
+                                 
+                                 
+                               ),
+                               br(),
+                               br(),
+                               textOutput("HomeSubt"),
+                               tags$head(tags$style("#HomeSubt{color : black;
+                                                    font-size: 22px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                               )
+                               ),
                                a(href="https://www.midiaresearch.com/blog/music-subscriber-market-shares-q2-2021", 
                                  target="_blank",
                                  "Music suscriber market shares Q2 2021 - Midia Research Article"),

@@ -18,7 +18,8 @@ shinyServer(function(input, output) {
   output$HomeTitle2 <- renderText({"All that Jazz"})
   
   output$HomePara = renderText({paste(read_file("Data/home.txt"))})
-  
+  output$HomePara2 = renderText({"This app is about understanding what information we can get from a small dataset (on the scale of what is used by Spotify's algorithms for example) with fairly simple methods. The objectives were: "})
+  output$HomeSubt = renderText({"References"})
   # 2e onglet : dataset description (features explanation) -----
   
   # Data description text outputs

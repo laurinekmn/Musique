@@ -20,7 +20,8 @@ shinyServer(function(input, output) {
   output$HomePara = renderText({paste(read_file("Data/home.txt"))})
   output$HomePara2 = renderText({"This app is about understanding what information we can get from a small dataset (on the scale of what is used by Spotify's algorithms for example) with fairly simple methods. The objectives were: "})
   output$HomeSubt = renderText({"References"})
-
+  output$authors = renderText({"Made by Sofia Chemolli, Léane Gernigon and Laurine Komendanczyk."})
+  
   # 2e onglet : dataset description (features explanation) -----
   
   # Data description text outputs
@@ -57,7 +58,7 @@ shinyServer(function(input, output) {
     amBoxplot(object = as.formula(paste(input$var_box, "~ music_genre")),
               data = musique,
               col = input$color_box, border = "FFFFFF", main = input$titre_box,
-              ylab = paste(input$var_box), xlab = "Music genre",
+              ylab = paste(input$var_box), xlab = "Musical genre",
               export = TRUE, zoom = TRUE)
   })
   
@@ -118,11 +119,11 @@ shinyServer(function(input, output) {
   
   # Explication des onglets
   
-  output$exp_hist <- renderText({"Choose the variable you want to represent and have a look at the distribution."})
-  output$exp_box <- renderText({"Choose the variable you want to represent and have a look at the distribution in function of the music genre."})
-  output$exp_scat <- renderText({"Do not forget to update the view to see the plot. 
-    REMEMBER: if you choose the same variable for both axes, you will obtain a straight line and correlation = 1."})
-  output$exp_bar <- renderText({"Representation of the music genre distribution according to key or mode (the two categorical variables of the dataset)."})
+  output$exp_hist <- renderText({"Choose the variable you want to represent and take a look at the distribution."})
+  output$exp_box <- renderText({"Choose the variable you want to represent and take a look at the distribution according to the musical genre."})
+  output$exp_scat <- renderText({"IMPORTANT: Don't forget to click \"Update\" to see the plot with the newest settings. 
+    REMEMBER: If you choose the same variable for both axes, you will obtain a straight line and correlation = 1."})
+  output$exp_bar <- renderText({"Representation of the musical genre distribution according to key or mode (two categorical variables of the dataset)."})
   
   
   # 4e onglet : FAMD & Song Recommendations ------
@@ -256,14 +257,14 @@ shinyServer(function(input, output) {
     } 
   )
   
-  output$graphAFMD = renderText("FAMD graphs with tempo, mode, key, loudness, liveness, instrumentalness, speechiness, acousticness and duration as active variables. The tracks on the first graph can be colored according to the variable. Make your choice on the side panel. IMPORTANT: You need to click \"update\" to see graphs in the first place or to update them.")
+  output$graphAFMD = renderText("FAMD graphs with tempo, mode, key, loudness, liveness, instrumentalness, speechiness, acousticness and duration as active variables. The tracks on the first graph can be colored according to the variable. Make your choice on the side panel. IMPORTANT: You need to click \"Update\" to see graphs in the first place or to update them.")
   output$eigenvalues = renderText({paste("Eigenvalues of the FAMD. See Details tab to learn more about the FAMD tuning.")})
   output$featuresFAMD = renderText({paste("Coordinates, contribution and cos² for each feature and dimension. See Details tab to learn more about the FAMD tuning.")})
   output$recomdt = renderText({paste("In this tab, choose a song from the list and get recommended a few others that you might like as well. See Details tab to learn more about the FAMD tuning.")})
-
+  
   ## Recommendation tab
   
-output$artist_genre <- renderUI({
+  output$artist_genre <- renderUI({
     selectInput(inputId = "artist_reco", 
                 label = "Filter by artist", 
                 choices = c(subset[which (subset$music_genre %in% input$genre_reco),]$artist_name))
@@ -429,20 +430,22 @@ output$artist_genre <- renderUI({
                                     music_genre = input$Genre)})
   
   
-  
-  output$prediction <- renderText({paste("Prediction :", round(predict(model(), newdata = data_pred())))})
+  output$prediction0 <- renderText({paste(round(predict(model(), newdata = data_pred())),"/ 100")})
+  output$prediction <- renderText({paste("The predicted popularity of a song with these characteristics using the model choosen in the left side panel is", round(predict(model(), newdata = data_pred())),"out of 100 (100 being the best grade possible). Update your song's features or the model to see how the popularity evolves! ")})
   
   # Explication des sous-onglets
   
-  output$exp_pred <- renderText({"You have an idea for a new song ? Let's try to predict the popularity of your future song !
+  output$exp_pred <- renderText({"You have an idea for a future song? Let's try to predict its popularity! 
       "})
+  output$pop_subtitle <- renderText({"Popularity predicted by the model"})
+  output$datatable <- renderText({"Compare the actual value of popularity with the one predicted by the model, and get an insight of the difference between the two.
+      "})
+  output$graph_pred <- renderText({"Graph representing predicted popularity according to the actual popularity of the song."})
   
-  output$datatable <- renderText({"Compare the actual value of popularity to the one predicted and the différence between the two of them.
-      "})
-  output$datatble2 <- renderText({"Color code : "})
+  output$datatble2 <- renderText({"Color code"})
   
   output$graph_res <- renderText({"Repartition of the difference between prediction and actual value of popularity"})
   
-  output$summary <- renderText({"Summary of the model selected on the panel on the right. Do not forget to update the view to have the information. "})
+  output$summary <- renderText({"Summary of the model selected on the left side panel. IMPORTANT: Don't forget to click \"Update\" once you're done tuning the model!"})
   
 })

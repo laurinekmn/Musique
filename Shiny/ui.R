@@ -9,9 +9,9 @@
 
 shinyUI(fluidPage(
   
-  theme = bs_theme(version = 4, 
-                   bootswatch = "minty", 
-                   bg = "GhostWhite", 
+  theme = bs_theme(version = 4,
+                   bootswatch = "minty",
+                   bg = "GhostWhite",
                    fg = "Teal"),
   
   # Application title
@@ -80,7 +80,7 @@ shinyUI(fluidPage(
                                  tags$li("To recommend relevant songs from a starting song"
 
                                  ),
-                                 tags$li("For an artist, to know if their song will be a hit by predict popularity from different variables"
+                                 tags$li("For an artist, to know if their song will be a hit by predicting popularity from different variables"
                                  )
 
                                  
@@ -104,7 +104,20 @@ shinyUI(fluidPage(
                                  target="_blank",
                                  "How the Spotify Algorithm actually works - Youtube video"),
                                br(),
-                               br()
+                               br(),
+                               br(),
+                               br(),
+                               textOutput("authors"),
+                               tags$head(tags$style("#authors{color : black;
+                                                    font-size: 14px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    letter-spacing: 3px;
+                                                    text-align: center;
+                                                    }"
+                               )
+                               )
+                               
  
                         ), 
                         column(width = 2)
@@ -115,7 +128,7 @@ shinyUI(fluidPage(
                       fluidRow(
                         column(width=3, 
                                wellPanel(
-                                 titlePanel("Bibliography"), 
+                                 titlePanel("References"), 
                                  a(href=" https://developer.spotify.com/documentation/web-api/reference/#/operations/get-several-audio-features",
                                    target="_blank",
                                    "Spotify for Developers website"),
@@ -312,7 +325,7 @@ shinyUI(fluidPage(
                                             # selection des variables y
                                             radioButtons(inputId = "var_scat_y", label = "Y variable: ", choices = colnames(musique)[c(5, 8, 12)]),
                                             
-                                            actionButton("goButton2", "Update view", class = "btn-success", icon("refresh"))
+                                            actionButton("goButton2", "Update", class = "btn-success", icon("refresh"))
                                             
                                             
                                           )
@@ -397,10 +410,10 @@ shinyUI(fluidPage(
                                  textInput(inputId = "FAMD2_title", label = "2. Features contribution - title", value = "Features contribution"), 
 
                                  # print("3rd graph"),
-                                 textInput(inputId = "FAMD3_title", label = "2. Correlation circle - title", value = "Correlation circle"), 
+                                 textInput(inputId = "FAMD3_title", label = "3. Correlation circle - title", value = "Correlation circle"), 
                                  
                                  # select type file
-                                 radioButtons(inputId = "type_down", label = "Select the file type for the download", choices = list("jpeg","png", "pdf")),
+                                 radioButtons(inputId = "type_down", label = "Download format", choices = list("jpeg","png", "pdf")),
                                  
                                  actionButton("goButton3", "Update", class = "btn-success", icon("refresh"))
                                  
@@ -565,7 +578,7 @@ shinyUI(fluidPage(
                                  titlePanel("Model editing"),
                                  selectInput(
                                    inputId = "vars_quanti",
-                                   label = "Select model quanti variables",
+                                   label = "Select quantitative variables",
                                    choices = colnames(musique)[c(5:9, 11:12, 14:15, 17)],
                                    selected = "energy",
                                    multiple = TRUE,
@@ -575,7 +588,7 @@ shinyUI(fluidPage(
                                  ),
                                  selectInput(
                                    inputId = "vars_quali",
-                                   label = "Select model quali variables",
+                                   label = "Select qualitative variables",
                                    choices = colnames(musique)[c(10, 13, 18)],
                                    selected = NULL,
                                    multiple = TRUE,
@@ -591,7 +604,7 @@ shinyUI(fluidPage(
                                    max = 99,
                                    value = 70
                                  ),
-                                 actionButton("goButton", "Update view", class = "btn-success", icon("refresh"))
+                                 actionButton("goButton", "Update", class = "btn-success", icon("refresh"))
                                )
                         ),
                         # deuxieme colonne
@@ -621,6 +634,12 @@ shinyUI(fluidPage(
                                                    ),
                                                    br(),
                                                    textOutput("rmse"),
+                                                   tags$head(tags$style("#rmse{color : black;
+                                                    font-size: 18px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: bold;
+                                                    }")
+                                                   ),
                                                    br(),
                                                    plotlyOutput("graph")
                                           ),
@@ -635,13 +654,12 @@ shinyUI(fluidPage(
                                                    ),
                                                    br(),
                                                    textOutput("datatble2"),
-                                                   tags$head(tags$style("#datatable2color : black;
-                                                    font-size: 16px;
-                                                    font-family: Arial,sans-serif;
+                                                   tags$head(tags$style("#datatble2{color : black;
+                                                    font-size: 20px;
+                                                    font-family: georgia,sans-serif;
                                                     font-style: normal;
                                                     }")
                                                    ),
-                                                   br(),
                                                    tags$li("Green : abs(popularity) < 10"),
                                                    tags$li("Orange : abs(popularity) < 20"),
                                                    tags$li("Red : abs(popularity) > 20"),
@@ -662,7 +680,7 @@ shinyUI(fluidPage(
                                                    plotlyOutput("graph_residual")
                                           ),
                                           
-                                          tabPanel("Your prediction",
+                                          tabPanel("Popularity prediction",
                                                    
                                                    textOutput("exp_pred"),
                                                    tags$head(tags$style("#exp_pred{color : black;
@@ -830,8 +848,31 @@ shinyUI(fluidPage(
                                                      
                                                    ),
                                                    br(),
+                                                   br(),
+                                                   textOutput("pop_subtitle"),
+                                                   tags$head(tags$style("#pop_subtitle{color : 1d3624;
+                                                    font-size: 28px;
+                                                    font-family: Georgia,serif;
+                                                    font-style: bold;
+                                                    }"
+                                                   )
+                                                   ),
+                                                   br(),
+                                                   textOutput("prediction0"),
+                                                   tags$head(tags$style("#prediction0{color : black;
+                                                    font-size: 20px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: bold;
+                                                    }")
+                                                   ),
+                                                   br(),
                                                    textOutput("prediction"),
-                                                   br()
+                                                   tags$head(tags$style("#prediction{color : black;
+                                                    font-size: 16px;
+                                                    font-family: Arial,sans-serif;
+                                                    font-style: normal;
+                                                    }")
+                                                   )
                                                 
                                           )
                                           

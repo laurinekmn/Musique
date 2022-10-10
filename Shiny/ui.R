@@ -641,7 +641,8 @@ shinyUI(fluidPage(
                                                     }")
                                                    ),
                                                    br(),
-                                                   plotlyOutput("graph")
+                                                   plotlyOutput("graph"),
+                                                   br()
                                           ),
                                           
                                           tabPanel("DataTable",

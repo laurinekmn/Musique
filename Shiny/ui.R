@@ -622,7 +622,8 @@ shinyUI(fluidPage(
                                                    br(),
                                                    textOutput("rmse"),
                                                    br(),
-                                                   plotlyOutput("graph")
+                                                   plotlyOutput("graph"),
+                                                   br()
                                           ),
                                           
                                           tabPanel("DataTable",

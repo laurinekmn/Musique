@@ -430,15 +430,17 @@ output$artist_genre <- renderUI({
   
   
   
-  output$prediction <- renderText({paste("Prediction :", round(predict(model(), newdata = data_pred())))})
+  output$prediction <- renderText({paste("Predicted popularity:", round(predict(model(), newdata = data_pred())))})
   
   # Explication des sous-onglets
   
-  output$exp_pred <- renderText({"You have an idea for a new song ? Let's try to predict the popularity of your future song !
+  output$exp_pred <- renderText({"You have an idea for a new song? Let's try to predict the popularity of your future song!
       "})
   
   output$datatable <- renderText({"Compare the actual value of popularity to the one predicted and the différence between the two of them.
       "})
+  output$graph_pred <- renderText({"Prediction = f(Actual popularity)"})
+  
   output$datatble2 <- renderText({"Color code : "})
   
   output$graph_res <- renderText({"Repartition of the difference between prediction and actual value of popularity"})
